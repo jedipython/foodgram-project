@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.views.generic import CreateView
 from django.core.mail import send_mail
-from .forms import CreationForm
+from .forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render
 
@@ -27,7 +27,7 @@ from django.shortcuts import render
 
 
 class SignUp(CreateView):
-    form_class = CreationForm
+    form_class = UserCreationForm
     success_url = "/auth/login/"
     template_name = "signup.html"
 

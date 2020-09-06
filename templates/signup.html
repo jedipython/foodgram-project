@@ -19,7 +19,7 @@
         <h1 class="main__title">Регистрация</h1>
     </div>
     <div class="form-container">
-        <form action="." method="post" class="form"></form>
+        <form action="." method="post" class="form">
             {% csrf_token %}
             
                 {% for field in form %}
@@ -33,6 +33,7 @@
                     </div>
             </div>
         {% endfor %}
+    
             <!-- <div class="form__group">
                 <label for="id_first_name" class="form__label">Имя</label>
                 <div class="form__field-group">
@@ -67,7 +68,7 @@
                 <button type="submit" class="button button_style_blue">Создать аккаунт</button>
             </div>
         </form>
-    </form>
+   
     </div>
 
 
