@@ -1,0 +1,35 @@
+# версия docker-compose
+version: '3'
+
+volumes:
+  postgres_data:
+  static_volume:
+
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - web
+    volumes:
+      - static_volume:/code/static
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+  web:
+    build: .
+    restart: always
+    expose:
+      - 8000
+    # "зависит от", 
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+    volumes:
+      - static_volume:/code/statiс
+  
