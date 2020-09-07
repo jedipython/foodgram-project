@@ -29,7 +29,7 @@ from django.shortcuts import render
 class SignUp(CreateView):
     form_class = UserCreationForm
     success_url = "/auth/login/"
-    template_name = "signup.html"
+    template_name = "registration/signup.html"
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
@@ -38,5 +38,5 @@ class SignUp(CreateView):
 
 
 def send_mail_ls(email):
-    send_mail('Подтверждение регистрации Yatube', 'Вы зарегистрированы!',
-              'Yatube.ru <admin@yatube.ru>', [email], fail_silently=False)
+    send_mail('Подтверждение регистрации Продуктовый помощник', 'Вы зарегистрированы!',
+              'ProProduct.ru <admin@proproduct.ru>', [email], fail_silently=False)
