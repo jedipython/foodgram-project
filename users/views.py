@@ -1,29 +1,10 @@
-from django.http import HttpResponse
 from django.views.generic import CreateView
 from django.core.mail import send_mail
 from .forms import UserCreationForm
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render
-
-
-# def user_login(request):
-#     if request.method == 'POST':
-#         form = LoginForm(request.POST)
-#         if form.is_valid():
-#             cd = form.cleaned_data
-#             user = authenticate(
-#                 username=cd['username'], password=cd['password'])
-#             if user is not None:
-#                 if user.is_active:
-#                     login(request, user)
-#                     return HttpResponse('Authenticated successfully')
-#                 else:
-#                     return HttpResponse('Disabled account')
-#             else:
-#                 return HttpResponse('Invalid login')
-#     else:
-#         form = LoginForm()
-#     return render(request, 'login.html', {'form': form})
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.shortcuts import render, redirect
 
 
 class SignUp(CreateView):
@@ -38,5 +19,25 @@ class SignUp(CreateView):
 
 
 def send_mail_ls(email):
-    send_mail('Подтверждение регистрации Продуктовый помощник', 'Вы зарегистрированы!',
-              'ProProduct.ru <admin@proproduct.ru>', [email], fail_silently=False)
+    send_mail('Подтверждение регистрации Продуктовый помощник',
+              'Вы зарегистрированы!',
+              'ProProduct.ru <admin@proproduct.ru>', [email],
+              fail_silently=False)
+
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(
+                request, 'Your password was successfully updated!')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'registration/changePassword.html', {
+        'form': form
+    })
