@@ -1,33 +1,10 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Рецепты</title>
-    <link rel="stylesheet" href="./pages/index.css">
-</head>
-<body class="body">
-  <header class="header">
-      <nav class="nav">
-          <div class="nav__container container">
-              <ul class="nav__items list">
-                  <li class="nav__item nav__item_active"><a href="#" class="nav__link link">Рецепты</a></li>
-                  <li class="nav__item"><a href="#" class="nav__link link">Мои подписки</a></li>
-                  <li class="nav__item"><a href="#" class="nav__link link">Создать рецепт</a></li>
-                  <li class="nav__item"><a href="#" class="nav__link link">Избранное</a></li>
-                  <li class="nav__item"><a href="#" class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge" id="counter">4</span></li>
-
-              </ul>
-              <ul class="nav__items list">
-                  <li class="nav__item"><a href="#" class="nav__link link">Изменить пароль</a></li>
-                  <li class="nav__item"><a href="#" class="nav__link link">Выход</a></li>
-              </ul>
-          </div>
-      </nav>
-  </header>
-    <main class="main container">
+{% extends "base.html" %} 
+{% block title %} Автор {% endblock %}
+{% load user_filters %}
+{% load static %}
+{% block style %} <link rel="stylesheet" href={% static "/pages/index.css" %}>{% endblock %}
+{% block content %}
+        <div class="main__header">
         <div class="main__header">
             <h1 class="main__title">Вероника Чернова</h1>
             <ul class="tags">
@@ -49,7 +26,7 @@
         <p style="padding: 0 0 2em 0;"><a class="button button_style_light-blue" href="#">Подписаться на автора</a></p>
         <div class="card-list">
         <div class="card" data-id="120">
-            <a href="#" class="link" target="_blank"><img src="./images/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
+            <a href="#" class="link" target="_blank"><img src="../media/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
             <div class="card__body">
                 <a class="card__title link" href="#" target="_blank">Французские тосты</a>
                 <ul class="card__items">
@@ -68,7 +45,7 @@
             </div>
         </div>
         <div class="card" data-id="121">
-            <a href="#" class="link" target="_blank"><img src="./images/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
+            <a href="#" class="link" target="_blank"><img src="../media/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
             <div class="card__body">
                 <a class="card__title link" href="#" target="_blank">Французские тосты</a>
                 <ul class="card__items">
@@ -87,7 +64,7 @@
             </div>
         </div>
         <div class="card" data-id="122">
-            <a href="#" class="link" target="_blank"><img src="./images/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
+            <a href="#" class="link" target="_blank"><img src="../media/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
             <div class="card__body">
                 <a class="card__title link" href="#" target="_blank">Французские тосты</a>
                 <ul class="card__items">
@@ -106,7 +83,7 @@
             </div>
         </div>
         <div class="card" data-id="123">
-            <a href="#" class="link" target="_blank"><img src="./images/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
+            <a href="#" class="link" target="_blank"><img src="../media/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
             <div class="card__body">
                 <a class="card__title link" href="#" target="_blank">Французские тосты</a>
                 <ul class="card__items">
@@ -125,7 +102,7 @@
             </div>
         </div>
         <div class="card" data-id="124">
-            <a href="#" class="link" target="_blank"><img src="./images/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
+            <a href="#" class="link" target="_blank"><img src="../media/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
             <div class="card__body">
                 <a class="card__title link" href="#" target="_blank">Французские тосты</a>
                 <ul class="card__items">
@@ -156,24 +133,13 @@
             </ul>
         </nav>
     </main>
-    <footer class="footer">
-        <div class="footer__container container">
-            <a href="#" class="footer__brand link">Продуктовый помощник</a>
-            <ul class="footer__items">
-                <li class="footer__item"><a href="#" class="footer__link link">Об авторе </a></li>
-                <li class="footer__item"><a href="#" class="footer__link link">Технологии</a></li>
-            </ul>
-        </div>
-    </footer>
-  <script src="./js/components/MainCards.js"></script>
-
-  <script src="./js/components/Purchpurachases.js"></script>
-  <script src="./js/components/Favorites.js"></script>
-
-  <script src="./js/components/CardList.js"></script>
-  <script src="./js/components/Header.js"></script>
-
-  <script src="./js/api/Api.js"></script>
-  <script src="indexAuth.js"></script>
-</body>
-</html>
+{% block script %}
+<script src={% static "/js/components/MainCards.js" %}></script>
+<script src={% static "/js/components/Purchpurachases.js" %}></script>
+<script src={% static "/js/components/Favorites.js" %}></script>
+<script src={% static "/js/components/CardList.js" %}></script>
+<script src={% static "/js/components/Header.js" %}></script>
+<script src={% static "/js/api/Api.js" %}></script>
+<script src={% static "indexAuth.js" %}></script>
+{% endblock %}
+{% endblock %}

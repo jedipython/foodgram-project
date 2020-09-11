@@ -1,33 +1,9 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Мои подписки</title>
-    <link rel="stylesheet" href="./pages/myFollow.css">
-</head>
-<body class="body">
-<header class="header">
-    <nav class="nav">
-        <div class="nav__container container">
-            <ul class="nav__items list">
-                <li class="nav__item"><a href="#" class="nav__link link">Рецепты</a></li>
-                <li class="nav__item nav__item_active"><a href="#" class="nav__link link">Мои подписки</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Создать рецепт</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Избранное</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Список покупок</a><span class="badge badge_style_blue nav__badge" id="counter">4</span></li>
+{% extends "base.html" %} 
+{% block title %} Мои подписки {% endblock %}
+{% load static %}
+{% block style %} <link rel="stylesheet" href={% static "/pages/myFollow.css" %}>{% endblock %}
+{% block content %}
 
-            </ul>
-            <ul class="nav__items list">
-                <li class="nav__item"><a href="#" class="nav__link link">Изменить пароль</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Выход</a></li>
-            </ul>
-        </div>
-    </nav>
-</header>
-<main class="main container">
     <div class="main__header">
         <h1 class="main__title">Мои подписки</h1>
     </div>
@@ -40,21 +16,21 @@
             <ul class="card-user__items">
                 <li class="card-user__item">
                     <div class="recipe">
-                        <img src="./images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
+                        <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
                         <h3 class="recipe__title">Французские тосты</h3>
                         <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
                     </div>
                 </li>
                 <li class="card-user__item">
                     <div class="recipe">
-                        <img src="./images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
+                        <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
                         <h3 class="recipe__title">Французские тосты</h3>
                         <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
                     </div>
                 </li>
                 <li class="card-user__item">
                     <div class="recipe">
-                        <img src="./images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
+                        <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
                         <h3 class="recipe__title">Французские тосты</h3>
                         <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
                     </div>
@@ -76,21 +52,21 @@
                 <ul class="card-user__items">
                     <li class="card-user__item">
                         <div class="recipe">
-                            <img src="./images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
+                            <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
                             <h3 class="recipe__title">Французские тосты</h3>
                             <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
                         </div>
                     </li>
                     <li class="card-user__item">
                         <div class="recipe">
-                            <img src="./images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
+                            <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
                             <h3 class="recipe__title">Французские тосты</h3>
                             <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
                         </div>
                     </li>
                     <li class="card-user__item">
                         <div class="recipe">
-                            <img src="./images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
+                            <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
                             <h3 class="recipe__title">Французские тосты</h3>
                             <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
                         </div>
@@ -112,21 +88,21 @@
                 <ul class="card-user__items">
                     <li class="card-user__item">
                         <div class="recipe">
-                            <img src="./images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
+                            <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
                             <h3 class="recipe__title">Французские тосты</h3>
                             <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
                         </div>
                     </li>
                     <li class="card-user__item">
                         <div class="recipe">
-                            <img src="./images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
+                            <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
                             <h3 class="recipe__title">Французские тосты</h3>
                             <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
                         </div>
                     </li>
                     <li class="card-user__item">
                         <div class="recipe">
-                            <img src="./images/testCardImg.png" alt="какой-то-текст" class="recipe__image">
+                            <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
                             <h3 class="recipe__title">Французские тосты</h3>
                             <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
                         </div>
@@ -153,21 +129,12 @@
         </ul>
     </nav>
 </main>
-<footer class="footer">
-    <div class="footer__container container">
-        <a href="#" class="footer__brand link">Продуктовый помощник</a>
-        <ul class="footer__items">
-            <li class="footer__item"><a href="#" class="footer__link link">Об авторе </a></li>
-            <li class="footer__item"><a href="#" class="footer__link link">Технологии</a></li>
-        </ul>
-    </div>
-</footer>
-<script src="./js/components/MainCards.js"></script>
-<script src="./js/components/MyFollow.js"></script>
-<script src="./js/components/Subscribe.js"></script>
-<script src="./js/components/Header.js"></script>
-<script src="./js/api/Api.js"></script>
-<script src="myFollow.js"></script>
-
-</body>
-</html>
+{% block script %}
+<script src={% static "/js/components/MainCards.js" %}></script>
+<script src={% static "/js/components/MyFollow.js" %}></script>
+<script src={% static "/js/components/Subscribe.js" %}></script>
+<script src={% static "/js/components/Header.js" %}></script>
+<script src={% static "/js/api/Api.js" %}></script>
+<script src={% static "myFollow.js" %}></script>
+{% endblock %}
+{% endblock %}

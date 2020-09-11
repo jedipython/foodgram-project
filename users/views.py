@@ -5,7 +5,6 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
-from django.contrib.auth.views import password_reset
 
 
 class SignUp(CreateView):
@@ -44,9 +43,5 @@ def change_password(request):
     })
 
 
-def forgot_password(request):
-    if request.method == 'POST':
-        return password_reset(request,
-                              from_email=request.POST.get('email'))
-    else:
-        return render(request, 'registration/resetPassword.html')
+def subscribes(request):
+    return render(request, "myFollow.html")

@@ -1,19 +1,9 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Рецепты</title>
-    {% load static %}
-    <link rel="stylesheet" href={% static "/pages/index.css" %}>
-</head>
-<body class="body">
-<header class="header">
-    {% include "nav.html" %}
-</header>
-    <main class="main container">
+{% extends "base.html" %} 
+{% block title %} Рецепты {% endblock %}
+{% load user_filters %}
+{% load static %}
+{% block style %}<link rel="stylesheet" href={% static "/pages/index.css" %}>{% endblock %}
+{% block content %}
         <div class="main__header">
             <h1 class="main__title">Рецепты</h1>
             <ul class="tags">
@@ -135,23 +125,16 @@
             </ul>
         </nav>
     </main>
-    <footer class="footer">
-        <div class="footer__container container">
-            <a href="#" class="footer__brand link">Продуктовый помощник</a>
-            <ul class="footer__items">
-                <li class="footer__item"><a href="#" class="footer__link link">Об авторе </a></li>
-                <li class="footer__item"><a href="#" class="footer__link link">Технологии</a></li>
-            </ul>
-        </div>
-    </footer>
-<script src="./js/components/MainCards.js"></script>
+    {% block script %}
+    <script src="./js/components/MainCards.js"></script>
 
-<script src="./js/components/Purchpurachases.js"></script>
+    <script src="./js/components/Purchpurachases.js"></script>
+    
+    <script src="./js/components/CardList.js"></script>
+    <script src="./js/components/Header.js"></script>
+    
+    <script src="./js/api/Api.js"></script>
+    <script src="indexNotAuth.js"></script>
+    {% endblock %}
+    {% endblock %}
 
-<script src="./js/components/CardList.js"></script>
-<script src="./js/components/Header.js"></script>
-
-<script src="./js/api/Api.js"></script>
-<script src="indexNotAuth.js"></script>
-</body>
-</html>
