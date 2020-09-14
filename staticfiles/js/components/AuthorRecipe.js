@@ -1,4 +1,4 @@
-class SingleCard extends MainCards{
+class AuthorRecipe extends MainCards{
     constructor(container, card, counter, api, userAuth,button) {
         super(container, card, counter, api, userAuth,button);
         this.tooltipAdd = this.tooltipAdd.bind(this);

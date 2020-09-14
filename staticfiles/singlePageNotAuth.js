@@ -4,7 +4,7 @@ const api = new Api(apiUrl);
 const header = new Header(counterId);
 
 const configButton = {
-    purchpurachases: {
+    purchases: {
         attr: 'data-out',
         default: {
             class: 'button_style_blue',
@@ -16,11 +16,11 @@ const configButton = {
         }
     }
 }
-const purchpurachases = new Purchpurachases(configButton.purchpurachases, api);
+const purchases = new Purchases(configButton.purchases, api);
 
 
 const singleCard = new SingleCard(container, '.single-card', header, api, false,{
-    purchpurachases,
+    purchases,
 });
 singleCard.addEvent();
 

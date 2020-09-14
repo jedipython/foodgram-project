@@ -3,7 +3,7 @@ const counterId = document.querySelector('#counter');
 const api = new Api(apiUrl);
 const header = new Header(counterId);
 const configButton = {
-    purchpurachases: {
+    purchases: {
         attr: 'data-out',
         default: {
             class: 'button_style_light-blue',
@@ -26,11 +26,11 @@ const configButton = {
         }
     }
 }
-const purchpurachases = new Purchpurachases(configButton.purchpurachases, api);
+const purchases = new Purchases(configButton.purchases, api);
 const favorites = new Favorites(configButton.favorites, api);
 
 const cardList = new CardList(container, '.card', header, api, true, {
-    purchpurachases,
+    purchases,
     favorites
 });
 

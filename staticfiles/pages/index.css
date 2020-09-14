@@ -19,10 +19,13 @@
 @import "../blocks/button/_style/button_style_blue.css";
 @import "../blocks/button/_style/button_style_light-blue.css";
 @import "../blocks/button/_style/button_style_none.css";
+@import "../blocks/button/size/button_size_subscribe.css";
 @import "../blocks/button/__icon/button__icon.css";
 @import "../blocks/button/_style/button_style_light-blue-outline.css";
 
 @import "../blocks/header/header.css";
+
+@import "../blocks/main/center-block.css";
 
 @import "../blocks/nav/nav.css";
 @import "../blocks/nav/__container/nav__container.css";

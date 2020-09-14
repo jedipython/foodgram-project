@@ -4,7 +4,6 @@
     margin-right: 28px;
     height: 100%;
     color: #000000;
-    cursor: pointer;
     position: relative;
 }
 .nav__item:last-child {

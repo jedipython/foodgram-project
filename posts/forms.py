@@ -1,8 +1,11 @@
 from django.contrib.auth import get_user_model
 from django import forms
+from .models import Post
 
 
 class AddRecipeForm(forms.ModelForm):
-    name = forms.CharField()
-    tags = forms.CharField()
+    class Meta:
+        model = Post
+        fields = ('title', 'text', 'time')
+
     
