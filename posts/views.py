@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Post
+from .models import Post, Tag
 from django.core.paginator import Paginator
 from .forms import AddRecipeForm
 from django.shortcuts import redirect
@@ -35,8 +35,11 @@ def index(request):
 
 
 def add_recipe(request):
+    print('Нуль') 
     if request.method == "POST":
         form = AddRecipeForm(request.POST, files=request.FILES or None)
+        print(request.POST) 
+        print('Первый') 
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -44,11 +47,18 @@ def add_recipe(request):
             post.text = form.cleaned_data['text']
             post.title = form.cleaned_data['title']
             post.time = form.cleaned_data['time']
+            post.slug = post.time
             post.save()
+            form.save_m2m()
+            print('Второй') 
+            print(form.data)
             return redirect('/')
+        
     else:
         form = AddRecipeForm()
-    return render(request, 'formRecipe.html', {'form': form})
+        print(form.data, '!!!')
+    tags = Tag.objects.all()
+    return render(request, 'formRecipe.html', {'form': form, 'tags': tags})
 
 
 def shop_list(request):

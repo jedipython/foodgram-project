@@ -8,7 +8,7 @@
     <h1 class="main__title">Создание рецепта</h1>
 </div>
 <div class="form-container">
-    <form class="form" method="post" enctype="multipart/form-data">
+    <form class="form" method="post" enctype="multipart/form-data" action="."> 
         {% csrf_token %}
         <div class="form__group">
             <label for="id_name" class="form__label">Название рецепта</label>
@@ -21,20 +21,19 @@
             <p class="form__label">Теги</p>
             <div class="form__field-group">
                 <div class="tags">
+                    {%  for tag in tags %}
                     <div class="tags__item">
-                        <input type="checkbox" name="breakfast" id="id_breakfast" class="tags__checkbox tags__checkbox_style_orange">
-                        <label for="id_breakfast" class="tags__label">Завтрак</label>
+                        <input 
+                            type="checkbox" 
+                            name="tags" 
+                            value="{{ tag.pk }}"
+                            id="id_{{ tag.value }}"
+                            class="tags__checkbox tags__checkbox_style_{{ tag.style }}">
+                        <label for="id_{{ tag.value }}" class="tags__label">{{ tag.name }}</label>
                     </div>
-                    <div class="tags__item">
-                        <input type="checkbox" name="lunch" id="id_lunch" class="tags__checkbox tags__checkbox_style_green" checked>
-                        <label for="id_lunch" class="tags__label">Обед</label>
-                    </div>
-                    <div class="tags__item">
-                        <input type="checkbox" name="dinner" id="id_dinner" class="tags__checkbox tags__checkbox_style_purple" checked>
-                        <label for="id_dinner" class="tags__label">Ужин</label>
-                    </div>
+                    {% endfor %}
                 </div>
-                <span class="form__error"></span>
+                <span class="form__error">{{ form.tags.errors }}</span>
             </div>
         </div>
         <div class="form__group">
