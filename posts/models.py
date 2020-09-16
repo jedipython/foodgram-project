@@ -27,7 +27,9 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to='recipes')
     text = models.TextField()
-    ingredients = models.ManyToManyField(Ingredient)
+    ingredients = models.ManyToManyField(Ingredient,
+                                         through='Amount',
+                                         through_fields=('recipe', 'ingredient'))
     tags = models.ManyToManyField(Tag)
     time = models.IntegerField()
 
@@ -37,3 +39,11 @@ class Post(models.Model):
     @property
     def text_as_list(self):
         return self.text.split('\n')
+
+
+class Amount(models.Model):
+    units = models.IntegerField()
+    ingredient = models.ForeignKey(
+        Ingredient, on_delete=models.CASCADE, related_name="ingredients")
+    recipe = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name="recipe")

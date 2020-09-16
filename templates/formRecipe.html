@@ -14,7 +14,11 @@
             <label for="id_name" class="form__label">Название рецепта</label>
             <div class="form__field-group">
                 {{ form.title|addclass:"form__input" }}
-                <span class="form__error"></span>
+                {% if form.errors %}
+                    {% for error in form.title.errors %}
+                        <span class="form__error">{{ error|escape }}</span>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <div class="form__group">
@@ -59,25 +63,37 @@
             <div class="form__field-group form__field-group_time">
                 {{ form.time|addclass:"form__input" }}
                 <label for="id_time" class="form__label">минут</label>
-                <span class="form__error"></span>
+                {% if form.errors %}
+                    {% for error in field.errors %}
+                        <span class="form__error">{{ error|escape }}</span>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <div class="form__group">
-            <label for="id_description" class="form__label">Описание</label>
+            <label for="{{ form.text.id_for_label }}" class="form__label">Описание</label>
             <div class="form__field-group">
-                {{ form.text|addclass:"form__input" }}
-                <span class="form__error"></span>
+                {{ form.text|addclass:"form__textarea" }}
+                {% if form.errors %}
+                    {% for error in field.errors %}
+                        <span class="form__error">{{ error|escape }}</span>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <div class="form__group">
             <span class="form__label">Загрузить фото</span>
             <div class="form__field-group">
-                <input type="file" name="file" id="id_file">
-                <span class="form__error"></span>
+                {{ form.image|addclass:"form__file-button" }}
+                {% if form.errors %}
+                    {% for error in field.errors %}
+                        <span class="form__error">{{ error|escape }}</span>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <div class="form__footer">
-            <button class="button button_style_blue" type='submit'>Создать рецепт</button>
+            <button class="button button_style_blue">Создать рецепт</button>
         </div>
     </form>
 </div>

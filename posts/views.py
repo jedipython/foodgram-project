@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from .models import Post, Tag, Ingredient
+from .models import Post, Tag, Ingredient, Amount
 from django.core.paginator import Paginator
 from .forms import AddRecipeForm
 from django.shortcuts import redirect
-import datetime
 from django.http import JsonResponse
-
+from .services import get_ingredients
+from django.views import View
 
 
 def index(request):
@@ -18,47 +18,30 @@ def index(request):
                                                  "paginator": paginator})
 
 
-# def change_password(request):
-#     if request.method == 'POST':
-#         form = PasswordChangeForm(request.user, request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             update_session_auth_hash(request, user)  # Important!
-#             messages.success(
-#                 request, 'Your password was successfully updated!')
-#             return redirect('change_password')
-#         else:
-#             messages.error(request, 'Please correct the error below.')
-#     else:
-#         form = PasswordChangeForm(request.user)
-#     return render(request, 'registration/changePassword.html', {
-#         'form': form
-#     })
-
-
 def add_recipe(request):
-    print('Нуль') 
     if request.method == "POST":
         form = AddRecipeForm(request.POST, files=request.FILES or None)
-        print(request.POST) 
-        print('Первый') 
+        ingredients = get_ingredients(request)
+        # if not bool(ingredients):
+        #     form.add_error(None, 'Добавьте ингредиенты')
+
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.pub_date = datetime.datetime.now()
-            post.text = form.cleaned_data['text']
-            post.title = form.cleaned_data['title']
-            post.time = form.cleaned_data['time']
             post.slug = post.time
             post.save()
+
+            for item in ingredients:
+                print(ingredients[item])
+                Amount.objects.create(
+                    units=ingredients[item],
+                    ingredient=Ingredient.objects.get(title=f'{item}'),
+                    recipe=post)
             form.save_m2m()
-            print('Второй') 
-            print(form.data)
             return redirect('/')
-        
+
     else:
-        form = AddRecipeForm()
-        print(form.data, '!!!')
+        form = AddRecipeForm(request.POST, files=request.FILES or None)
     tags = Tag.objects.all()
     return render(request, 'formRecipe.html', {'form': form, 'tags': tags})
 
@@ -71,6 +54,12 @@ def favorites(request):
     return render(request, 'favorite.html',)
 
 
-def api_ingredients(request):
-    queryset = Ingredient.objects.filter().values()
-    return JsonResponse({"ingredient": list(queryset)})
+class Ingredients(View):
+    """ Авто-Заполнение поля ингредиента по API """
+
+    def get(self, request):
+        text = request.GET['query']
+        ingredients = list(Ingredient.objects.filter(
+            title__contains=text).values('title', 'dimension')
+        )
+        return JsonResponse(ingredients, safe=False)

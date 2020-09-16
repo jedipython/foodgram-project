@@ -1,13 +1,9 @@
-# #!/bin/bash
+fixtures = (
+    "ingredients.json",
+)
 
-# # Collect static files
-# echo "Collect static files"
-# python manage.py collectstatic --noinput
-
-# # Apply database migrations
-# echo "Create model migrations"
-# python manage.py makemigrations
-
-# # Apply database migrations
-# echo "Apply db migrations"
-# python manage.py migrate
+for fixture in fixtures:
+    try:
+        call_command("loaddata", fixture)
+    except Exception:
+        print("Can't load fixtures from: ", fixture)  # noqa
