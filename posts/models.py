@@ -5,14 +5,15 @@ User = get_user_model()
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=100)
-    units = models.CharField(max_length=30)
+    title = models.CharField('Название ингредиента', max_length=255)
+    dimension = models.CharField('Мера измерения', max_length=255)
 
 
 class Tag(models.Model):
 
     value = models.CharField('Значение', max_length=50)
-    style = models.CharField('Префикс стиля шаблона', max_length=255, null=True)
+    style = models.CharField('Префикс стиля шаблона',
+                             max_length=255, null=True)
     name = models.CharField('Имя', max_length=255, null=True)
 
     def __str__(self):

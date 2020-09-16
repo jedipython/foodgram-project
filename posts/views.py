@@ -1,9 +1,11 @@
 from django.shortcuts import render
-from .models import Post, Tag
+from .models import Post, Tag, Ingredient
 from django.core.paginator import Paginator
 from .forms import AddRecipeForm
 from django.shortcuts import redirect
 import datetime
+from django.http import JsonResponse
+
 
 
 def index(request):
@@ -67,3 +69,8 @@ def shop_list(request):
 
 def favorites(request):
     return render(request, 'favorite.html',)
+
+
+def api_ingredients(request):
+    queryset = Ingredient.objects.filter().values()
+    return JsonResponse({"ingredient": list(queryset)})
