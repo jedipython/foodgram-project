@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Amount, Tag
+from .models import Recipe, Amount, Ingredient
 
 
 class AmountInline(admin.TabularInline):
@@ -7,7 +7,7 @@ class AmountInline(admin.TabularInline):
     extra = 1
 
 
-class PostAdmin(admin.ModelAdmin):
+class RecipeAdmin(admin.ModelAdmin):
 
     list_display = ('pk', 'title', "slug", "author",)
     search_fields = ("title",)
@@ -16,4 +16,27 @@ class PostAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-admin.site.register(Post, PostAdmin)
+admin.site.register(Recipe, RecipeAdmin)
+
+
+class AmountAdmin(admin.ModelAdmin):
+
+    list_display = ('pk', 'units', "ingredient", "recipe",)
+    search_fields = ("ingredient",)
+    list_filter = ("ingredient",)
+    empty_value_display = '-пусто-'
+
+
+admin.site.register(Amount, AmountAdmin)
+
+
+class IngredientAdmin(admin.ModelAdmin):
+
+    list_display = ('pk', "title", "dimension",)
+    search_fields = ("title",)
+    list_filter = ("title",)
+    empty_value_display = '-пусто-'
+
+
+admin.site.register(Ingredient, IngredientAdmin)
+

@@ -28,7 +28,12 @@
                     <p class="single-card__text"><span class="icon-user"></span> {{ post.author.username }}</p>
                 </div>
                 <ul class="single-card__items">
-                    <li class="single-card__item"><button class="button button_style_blue" name="purchases" data-out><span class="icon-plus"></span> Добавить в покупки</button></li>
+                    <li class="single-card__item">
+                        {% if not buying %}
+                        <button class="button button_style_blue" name="purchases" data-out><span class="icon-plus"></span> Добавить в покупки</button>
+                        {% else %}
+                        {% endif %}
+                    </li>
                     {% if request.user.is_authenticated %}<li class="single-card__item"><button class="button button_style_light-blue button_size_auto" name="subscribe" {% if not subsc %}data-out>Подписаться на автора {% else %}><span class="icon-check button__icon"></span> Отписаться от автора{% endif %}</button></li>
                {% endif %}
                 </ul>

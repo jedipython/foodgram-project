@@ -26,7 +26,7 @@ class Tag(models.Model):
         return self.name
 
 
-class Post(models.Model):
+class Recipe(models.Model):
     def file_name(instance, filename):
         ext = filename.split('.')[-1]
         filename = f'{instance.slug}.{ext}'
@@ -66,7 +66,8 @@ class Amount(models.Model):
     ingredient = models.ForeignKey(
         Ingredient, on_delete=models.CASCADE, related_name="ingredients")
     recipe = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name="recipe")
+        Recipe, on_delete=models.CASCADE, related_name="recipe")
 
     def __str__(self):
         return self.ingredient.title
+

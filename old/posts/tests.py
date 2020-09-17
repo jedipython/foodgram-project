@@ -4,7 +4,7 @@ from django.test import TestCase, Client
 from users.views import SignUp, send_mail_ls
 from django.contrib.auth import get_user_model
 from django.contrib.auth import logout
-from posts.models import Post, Group, Follow, Comment
+from posts.models import Recipe, Group, Follow, Comment
 import time
 from django.contrib.auth.models import User
 User = get_user_model()
@@ -35,8 +35,8 @@ class EmailTest(TestCase):
                 self.client.login(username='jonni', password='bsdfgSD21123')
                 response = self.client.get('/new/')
                 self.assertAlmostEqual(response.status_code, 200)
-                self.post = Post.objects.create(text="Всем привет, я временный ДЖонни, это мой первый пост, наф наф!", author=self.user)
-                self.assertEqual((Post.objects.filter(author=self.user).count()), 1)
+                self.post = Recipe.objects.create(text="Всем привет, я временный ДЖонни, это мой первый пост, наф наф!", author=self.user)
+                self.assertEqual((Recipe.objects.filter(author=self.user).count()), 1)
                 response = self.client.get('/jonni/')
                 self.assertEqual(len(response.context["page"]), 1)
                 response = self.client.get('/')
@@ -112,7 +112,7 @@ class FollowTests(TestCase):
         def test_follow_posts(self): #проверяем, что подписанный человек может видеть посты своего кумира у себя в ленте, а когда отпишется от него - не может  + комментировать посты может только залогиненный юзер
                 self.user = User.objects.get(username="testuser1")
                 self.client.force_login(self.user)
-                self.post = Post.objects.create(text="Всем привет, я пост проверки подписки, это  первый пост юзера testuser1, наф наф!", author=self.user)
+                self.post = Recipe.objects.create(text="Всем привет, я пост проверки подписки, это  первый пост юзера testuser1, наф наф!", author=self.user)
                 self.client.logout()
 
                 self.user = User.objects.get(username="testuser2")

@@ -1,14 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from .forms import PostForm, CommentsForm
 from django.contrib.auth.decorators import login_required
-from posts.models import Post, Group, User, Comment, Follow
+from posts.models import Recipe, Group, User, Comment, Follow
 from django.shortcuts import redirect
 import datetime
 from django.core.paginator import Paginator
 import random
 
 def index(request):
-    post_list = Post.objects.order_by("-pub_date").all()
+    post_list = Recipe.objects.order_by("-pub_date").all()
     paginator = Paginator(post_list, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -17,7 +17,7 @@ def index(request):
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    post_list_group = Post.objects.filter(group=group).order_by("-pub_date").all()
+    post_list_group = Recipe.objects.filter(group=group).order_by("-pub_date").all()
     paginator = Paginator(post_list_group, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -46,8 +46,8 @@ def profile(request, username):
     user_profile = get_object_or_404(User, username=username)
     subscribe = random.randint(1,27)
     sub = random.randint(1,5)
-    amount_posts = Post.objects.filter(author__username=username).count()
-    user_posts = Post.objects.filter(author__username=user_profile).order_by("-pub_date").all()
+    amount_posts = Recipe.objects.filter(author__username=username).count()
+    user_posts = Recipe.objects.filter(author__username=user_profile).order_by("-pub_date").all()
     paginator = Paginator(user_posts, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -59,8 +59,8 @@ def profile(request, username):
 
 def post_view(request, username, post_id):
     user_profile = get_object_or_404(User, username=username)
-    amount_posts = Post.objects.filter(author__username=username).count()
-    post = Post.objects.get(author__username=user_profile, id=post_id )
+    amount_posts = Recipe.objects.filter(author__username=username).count()
+    post = Recipe.objects.get(author__username=user_profile, id=post_id )
     form = CommentsForm()
     items = None
     if Comment.objects.filter(post=post_id).count():
@@ -71,7 +71,7 @@ def post_view(request, username, post_id):
 def post_edit(request, username, post_id):
     user_profile = get_object_or_404(User, username=username) 
     title_post = 'Редактирование поста' 
-    post = get_object_or_404(Post, id=post_id) 
+    post = get_object_or_404(Recipe, id=post_id) 
     send_buttom = 'Сохранить' 
     if request.user == user_profile and post.author == user_profile:
         if request.method == "POST": 
@@ -99,7 +99,7 @@ def server_error(request):
     return render(request, "misc/500.html", status=500)
 
 def add_comment(request, username, post_id):
-    post = get_object_or_404(Post, pk=post_id)
+    post = get_object_or_404(Recipe, pk=post_id)
 
     if request.method == 'POST':
         form = CommentsForm(request.POST)
@@ -120,7 +120,7 @@ def add_comment(request, username, post_id):
 def follow_index(request):
         follow = Follow.objects.filter(user=request.user).all() #На кого юзер подписан
         favorits = [favorit.author.id for favorit in follow]
-        posts = Post.objects.filter(author__in=favorits).order_by("-pub_date").all()
+        posts = Recipe.objects.filter(author__in=favorits).order_by("-pub_date").all()
         paginator = Paginator(posts, 10)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)

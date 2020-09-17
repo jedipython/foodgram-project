@@ -1,20 +1,20 @@
 from django.shortcuts import render
-from .models import Post, Tag, Ingredient, Amount, User
+from .models import Recipe, Tag, Ingredient, Amount, User
 from django.core.paginator import Paginator
 from .forms import AddRecipeForm
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from .services import get_ingredients
 from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def index(request):
-    post_list = Post.objects.order_by("-id").all()
+    post_list = Recipe.objects.order_by("-id").all()
     paginator = Paginator(post_list, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    # form = CommentsForm()
-    return render(request, "indexNotAuth.html", {"page": page,
+    return render(request, "index.html", {"page": page,
                                                  "paginator": paginator})
 
 
@@ -64,8 +64,28 @@ class Ingredients(View):
 
 
 def post_view(request, slug):
-    post = get_object_or_404(Post.objects.select_related('author'), slug=slug)
-    # ingredients = Amount.objects.filter(recipe=post.id)
-    x = Post.objects.first()
-    print(x.recipe)
+    post = get_object_or_404(Recipe.objects.select_related('author'),
+                             slug=slug)
     return render(request, "post.html", {'post': post})
+
+
+def profile_view(request, username):
+    user = get_object_or_404(User, username=username)
+    post_list = Recipe.objects.filter(author=user).order_by("-id")
+    paginator = Paginator(post_list, 10)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, "profile.html", {"page": page,
+                                            "paginator": paginator})
+
+
+class RecipeEdit(LoginRequiredMixin, View):
+    pass
+
+
+class RecipeDelete(LoginRequiredMixin, View):
+    pass
+
+
+class Subscriptions(LoginRequiredMixin, View):
+    pass
