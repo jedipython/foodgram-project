@@ -9,7 +9,7 @@ from django.views import View
 
 
 def index(request):
-    post_list = Post.objects.order_by("-pub_date").all()
+    post_list = Post.objects.order_by("-id").all()
     paginator = Paginator(post_list, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -22,8 +22,8 @@ def add_recipe(request):
     if request.method == "POST":
         form = AddRecipeForm(request.POST, files=request.FILES or None)
         ingredients = get_ingredients(request)
-        # if not bool(ingredients):
-        #     form.add_error(None, 'Добавьте ингредиенты')
+        if not bool(ingredients):
+            form.add_error(None, 'Добавьте ингредиенты')
 
         if form.is_valid():
             post = form.save(commit=False)
@@ -32,7 +32,6 @@ def add_recipe(request):
             post.save()
 
             for item in ingredients:
-                print(ingredients[item])
                 Amount.objects.create(
                     units=ingredients[item],
                     ingredient=Ingredient.objects.get(title=f'{item}'),

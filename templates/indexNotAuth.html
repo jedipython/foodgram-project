@@ -22,108 +22,55 @@
     </ul>
 </div>
 <div class="card-list">
-    <div class="card" data-id="120">
-        <a href="#" class="link" target="_blank"><img src="../media/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
+    {% for post in page %}
+    <div class="card" data-id="{{ post.id }}">
+        <a href="#" class="link" target="_blank"><img src="{{ post.image }}" alt="Фото {{ post.title }}" class="card__image"></a>
         <div class="card__body">
-            <a class="card__title link" href="#" target="_blank">Французские тосты</a>
+            <a class="card__title link" href="#" target="_blank">{{ post.title }}</a>
             <ul class="card__items">
-                <li class="card__item"><span class="badge badge_style_green">Обед</span></li>
-                <li class="card__item"><span class="badge badge_style_orange">Завтрак</span></li>
-                <li class="card__item"><span class="badge badge_style_purple">Ужин</span></li>
+                {% for tag in post.tags.all %}
+                <li class="card__item"><span class="badge badge_style_green">{{ tag.name }}</span></li>
+                {% endfor %}
             </ul>
             <div class="card__items card__items_column">
-                <p class="card__text"><span class="icon-time"></span> 20 мин.</p>
-                <p class="card__text"><span class="icon-user"></span> <a href="#" style="color: black">Вероника Чернова</a></p>
+                <p class="card__text"><span class="icon-time"></span> {{ post.time }} мин.</p>
+                <p class="card__text"><span class="icon-user"></span> <a href="#" style="color: black">{{ post.author }}</a></p>
             </div>
         </div>
         <div class="card__footer">
             <button class="button button_style_light-blue" name="purchases" data-out><span class="icon-plus button__icon"></span>Добавить в покупки</button>
         </div>
     </div>
-    <div class="card" data-id="121">
-        <a href="#" class="link" target="_blank"><img src="../media/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
-        <div class="card__body">
-            <a class="card__title link" href="#" target="_blank">Французские тосты</a>
-            <ul class="card__items">
-                <li class="card__item"><span class="badge badge_style_green">Обед</span></li>
-                <li class="card__item"><span class="badge badge_style_orange">Завтрак</span></li>
-                <li class="card__item"><span class="badge badge_style_purple">Ужин</span></li>
-            </ul>
-            <div class="card__items card__items_column">
-                <p class="card__text"><span class="icon-time"></span> 20 мин.</p>
-                <p class="card__text"><span class="icon-user"></span> <a href="#" style="color: black">Вероника Чернова</a></p>
-            </div>
-        </div>
-        <div class="card__footer">
-            <button class="button button_style_light-blue" name="purchases" data-out><span class="icon-plus button__icon"></span>Добавить в покупки</button>
-        </div>
-    </div>
-    <div class="card" data-id="122">
-        <a href="#" class="link" target="_blank"><img src="../media/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
-        <div class="card__body">
-            <a class="card__title link" href="#" target="_blank">Французские тосты</a>
-            <ul class="card__items">
-                <li class="card__item"><span class="badge badge_style_green">Обед</span></li>
-                <li class="card__item"><span class="badge badge_style_orange">Завтрак</span></li>
-                <li class="card__item"><span class="badge badge_style_purple">Ужин</span></li>
-            </ul>
-            <div class="card__items card__items_column">
-                <p class="card__text"><span class="icon-time"></span> 20 мин.</p>
-                <p class="card__text"><span class="icon-user"></span> <a href="#" style="color: black">Вероника Чернова</a></p>
-            </div>
-        </div>
-        <div class="card__footer">
-            <button class="button button_style_light-blue" name="purchases" data-out><span class="icon-plus button__icon"></span>Добавить в покупки</button>
-        </div>
-    </div>
-    <div class="card" data-id="123">
-        <a href="#" class="link" target="_blank"><img src="../media/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
-        <div class="card__body">
-            <a class="card__title link" href="#" target="_blank">Французские тосты</a>
-            <ul class="card__items">
-                <li class="card__item"><span class="badge badge_style_green">Обед</span></li>
-                <li class="card__item"><span class="badge badge_style_orange">Завтрак</span></li>
-                <li class="card__item"><span class="badge badge_style_purple">Ужин</span></li>
-            </ul>
-            <div class="card__items card__items_column">
-                <p class="card__text"><span class="icon-time"></span> 20 мин.</p>
-                <p class="card__text"><span class="icon-user"></span> <a href="#" style="color: black">Вероника Чернова</a></p>
-            </div>
-        </div>
-        <div class="card__footer">
-            <button class="button button_style_light-blue" name="purchases" data-out><span class="icon-plus button__icon"></span>Добавить в покупки</button>
-        </div>
-    </div>
-    <div class="card" data-id="124">
-        <a href="#" class="link" target="_blank"><img src="../media/testCardImg.png" alt="Какой-то текст" class="card__image"></a>
-        <div class="card__body">
-            <a class="card__title link" href="#" target="_blank">Французские тосты</a>
-            <ul class="card__items">
-                <li class="card__item"><span class="badge badge_style_green">Обед</span></li>
-                <li class="card__item"><span class="badge badge_style_orange">Завтрак</span></li>
-                <li class="card__item"><span class="badge badge_style_purple">Ужин</span></li>
-            </ul>
-            <div class="card__items card__items_column">
-                <p class="card__text"><span class="icon-time"></span> 20 мин.</p>
-                <p class="card__text"><span class="icon-user"></span> <a href="#" style="color: black">Вероника Чернова</a></p>
-            </div>
-        </div>
-        <div class="card__footer">
-            <button class="button button_style_light-blue" name="purchases" data-out><span class="icon-plus button__icon"></span>Добавить в покупки</button>
-        </div>
-    </div>
+        {% endfor %}
 </div>
+
+{% if page.has_other_pages %}
 <nav class="pagination" aria-label="Search results pages">
     <ul class="pagination__container">
-        <li class="pagination__item"><a class="pagination__link link" href="#"><span class="icon-left"></span></a></li>
-        <li class="pagination__item pagination__item_active"><a class="pagination__link link" href="#">1</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#">2</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#">3</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#">4</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#">5</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#"><span class="icon-right"></span></a></li>
+        {% if items.has_previous %}
+                
+                <li class="pagination__item"><a class="pagination__link link" href="?page={{ items.previous_page_number }}"><span class="icon-left"></span></a></li>
+      
+        {% endif %}
+        {% for i in paginator.page_range %}
+                {% if items.number == i %}
+                <li class="pagination__item pagination__item_active"><a class="pagination__link link" href="#">{{ i }}</a></li>
+                {% else %}
+                <li class="pagination__item"><a class="pagination__link link" href="?page={{ i }}">{{ i }}</a></li>
+                                {% endif %}
+        {% endfor %}
+        {% if items.has_next %}
+        <li class="pagination__item"><a class="pagination__link link" href="?page={{ items.next_page_number }}"><span class="icon-right"></span></a></li>
+             
+     
+        {% endif %}
+        
+        
+       
     </ul>
 </nav>
+ {% endif %}
+
 </main>
     {% block script %}
     <script src={% static "/js/components/MainCards.js" %}></script>

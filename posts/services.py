@@ -1,10 +1,12 @@
 def get_ingredients(request):
-    ingredients = []
+
+    ingredients = {}
     for key in request.POST:
-        if key.startswith('nameingredient'):
+        
+        if key.startswith('nameIngredient'):
             value_ingredient = key[15:]
             ingredients[request.POST[key]] = request.POST[
-                'valueingredient_' + value_ingredient
+                'valueIngredient_' + value_ingredient
             ]
     return ingredients
     
