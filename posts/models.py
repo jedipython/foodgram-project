@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+import os
+from django.conf import settings
+from pytils.translit import slugify
 
 User = get_user_model()
 
@@ -21,17 +24,31 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    slug = models.SlugField(unique=True)
+    def file_name(instance, filename):
+        ext = filename.split('.')[-1]
+        filename = f'{instance.slug}.{ext}'
+        fullname = os.path.join(settings.MEDIA_ROOT, 'images', filename)
+        if os.path.exists(fullname):
+            os.remove(fullname)
+
+        return f'images/{filename}'
+
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="post_author")
     title = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='recipes')
+    image = models.ImageField(upload_to=file_name)  # поле для картинки
     text = models.TextField()
     ingredients = models.ManyToManyField(Ingredient,
                                          through='Amount',
                                          through_fields=('recipe', 'ingredient'))
     tags = models.ManyToManyField(Tag)
     time = models.IntegerField()
+    slug = models.SlugField(editable=False, unique=True)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'id: {self.pk}, {self.title}'

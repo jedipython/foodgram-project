@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from .models import Post, Tag, Ingredient, Amount
+from .models import Post, Tag, Ingredient, Amount, User
 from django.core.paginator import Paginator
 from .forms import AddRecipeForm
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from .services import get_ingredients
 from django.views import View
@@ -28,7 +28,6 @@ def add_recipe(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.slug = post.time
             post.save()
 
             for item in ingredients:
@@ -62,3 +61,8 @@ class Ingredients(View):
             title__contains=text).values('title', 'dimension')
         )
         return JsonResponse(ingredients, safe=False)
+
+
+def post_view(request, slug):
+    post = get_object_or_404(Post.objects.select_related('author'), slug=slug)
+    return render(request, "singlePageNotAuth.html", {'post': post})

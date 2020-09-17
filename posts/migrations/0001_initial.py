@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('slug', models.SlugField(unique=True)),
                 ('title', models.CharField(max_length=255)),
-                ('image', models.ImageField(upload_to='recipes')),
+                ('image', models.ImageField(upload_to='media')),
                 ('text', models.TextField()),
                 ('time', models.IntegerField()),
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='post_author', to=settings.AUTH_USER_MODEL)),
