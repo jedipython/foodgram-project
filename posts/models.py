@@ -11,6 +11,9 @@ class Ingredient(models.Model):
     title = models.CharField('Название ингредиента', max_length=255)
     dimension = models.CharField('Мера измерения', max_length=255)
 
+    def __str__(self):
+        return self.title
+
 
 class Tag(models.Model):
 
@@ -64,3 +67,6 @@ class Amount(models.Model):
         Ingredient, on_delete=models.CASCADE, related_name="ingredients")
     recipe = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="recipe")
+
+    def __str__(self):
+        return self.ingredient.title

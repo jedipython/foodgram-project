@@ -1,15 +1,19 @@
 from django.contrib import admin
-from .models import Post
+from .models import Post, Amount, Tag
+
+
+class AmountInline(admin.TabularInline):
+    model = Amount
+    extra = 1
 
 
 class PostAdmin(admin.ModelAdmin):
-    # перечисляем поля, которые должны отображаться в админке
-    list_display = ('title', "slug", "author",) 
-    # добавляем интерфейс для поиска по тексту постов
-    search_fields = ("title",) 
-    # добавляем возможность фильтрации по дате
-    list_filter = ("author",) 
-    empty_value_display = '-пусто-' # это свойство сработает для всех колонок: где пусто - там будет эта строка
 
-# при регистрации модели Post источником конфигурации для неё назначаем класс PostAdmin
+    list_display = ('pk', 'title', "slug", "author",)
+    search_fields = ("title",)
+    list_filter = ("author",)
+    inlines = (AmountInline,)
+    empty_value_display = '-пусто-'
+
+
 admin.site.register(Post, PostAdmin)

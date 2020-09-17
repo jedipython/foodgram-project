@@ -65,4 +65,7 @@ class Ingredients(View):
 
 def post_view(request, slug):
     post = get_object_or_404(Post.objects.select_related('author'), slug=slug)
-    return render(request, "singlePageNotAuth.html", {'post': post})
+    # ingredients = Amount.objects.filter(recipe=post.id)
+    x = Post.objects.first()
+    print(x.recipe)
+    return render(request, "post.html", {'post': post})
