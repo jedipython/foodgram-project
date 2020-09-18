@@ -1,10 +1,12 @@
+import json
+
 from django.shortcuts import render
 from .models import Recipe, Tag, Ingredient, Amount, User, Subscription, Favorite, ShoppingList
 from django.core.paginator import Paginator
 from .forms import AddRecipeForm
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
-from .services import get_ingredients, get_author
+from .services import get_ingredients
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -104,6 +106,7 @@ class RecipeDelete(LoginRequiredMixin, View):
 
 
 class Subscriptions(LoginRequiredMixin, View):
+    
     def get(self, request):
         author = request.GET.get('author')
         if 'sub' in request.GET:
@@ -114,9 +117,11 @@ class Subscriptions(LoginRequiredMixin, View):
 
         return redirect('author_url',  username=author)
 
-    def post(self, request, author=None):
+    def post(self, request):
         """ Создание подписки на автора если ее еще нет. """
-        author = get_author(request, author)
+       
+        author = json.loads(request.body)['id']
+        print(author)
         user = request.user
         subs, created = Subscription.objects.get_or_create(
             defaults={

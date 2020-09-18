@@ -4,6 +4,8 @@ from .views import Ingredients, add_recipe, shop_list, index, post_view,\
 
 urlpatterns = [
     path('', index, name="index"),
+    path('subscriptions', Subscriptions.as_view(),
+         name='add_subscriptions_url'),
     path('api/v1/ingredients', Ingredients.as_view(), name='API'),
     path("add_recipe/", add_recipe, name="add_recipe"),
     path("shop_list/", shop_list, name="shop_list"),
@@ -16,6 +18,5 @@ urlpatterns = [
          name='author_url'),
     path('subscriptions/<int:id>/', Subscriptions.as_view(),
          name='del_subscriptions_url'),
-    path('subscriptions/', Subscriptions.as_view(),
-         name='add_subscriptions_url'),
+    
 ]

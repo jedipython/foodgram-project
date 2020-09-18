@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Recipe, Amount, Ingredient
+from .models import Recipe, Amount, Ingredient, Subscription
 
 
 class AmountInline(admin.TabularInline):
@@ -40,3 +40,13 @@ class IngredientAdmin(admin.ModelAdmin):
 
 admin.site.register(Ingredient, IngredientAdmin)
 
+
+class SubscriptionAdmin(admin.ModelAdmin):
+
+    list_display = ('pk', "author", "user",)
+    search_fields = ("author",)
+    list_filter = ("author",)
+    empty_value_display = '-пусто-'
+
+
+admin.site.register(Subscription, SubscriptionAdmin)

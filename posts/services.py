@@ -23,13 +23,13 @@ def get_id_recipe(request):
     return body.get('id')
 
 
-def get_author(request, author):
-    """ Функция возвращает автора для создания объекта подписки """
-    if author is None:
-        recipe_id = get_id_recipe(request)
-        author = get_object_or_404(
-            Recipe.objects.select_related('author'), id=recipe_id).author
-    else:
-        author = get_object_or_404(User, username=author)
-
-    return author
+# def get_author(request, author=None):
+#     """ Функция возвращает автора для создания объекта подписки """
+#     if author is None:
+#         recipe_id = get_id_recipe(request)
+#         author = get_object_or_404(
+#             Recipe.objects.select_related('post_author'), id=recipe_id).author
+#     else:
+#         author = get_object_or_404(User, username=author)
+    
+#     return author
