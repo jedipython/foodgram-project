@@ -30,8 +30,9 @@
                 <ul class="single-card__items">
                     <li class="single-card__item">
                         {% if not buying %}
-                        <button class="button button_style_blue" name="purchases" data-out><span class="icon-plus"></span> Добавить в покупки</button>
+                        <button class="button button_style_blue" name="purchpurchases" data-out><span class="icon-plus"></span> Добавить в покупки</button>
                         {% else %}
+                        <button class="button button_style_light-blue-outline" name="purchpurchases"><span class="icon-check button__icon"></span> Рецепт добавлен</button>
                         {% endif %}
                     </li>
                     {% if request.user.is_authenticated %}<li class="single-card__item"><button class="button button_style_light-blue button_size_auto" name="subscribe" {% if not subsc %}data-out>Подписаться на автора {% else %}><span class="icon-check button__icon"></span> Отписаться от автора{% endif %}</button></li>
@@ -52,7 +53,7 @@
             </div>
         </div>
     </main>
-
+    {% endblock %}
 {% block script %}
 {% if request.user.is_authenticated %}
 <script src={% static '/js/components/Favorites.js' %}></script>
@@ -71,4 +72,4 @@
 
 
 {% endblock %}
-{% endblock %}
+

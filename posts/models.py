@@ -71,3 +71,19 @@ class Amount(models.Model):
     def __str__(self):
         return self.ingredient.title
 
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name='user')
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='author')
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="fav_list")
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='like_recipe')
+
+
+class ShoppingList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="shop_list")
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='buy_recipe')

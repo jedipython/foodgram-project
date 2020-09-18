@@ -24,7 +24,7 @@
 <div class="card-list">
     {% for post in page %}
     <div class="card" data-id="{{ post.id }}">
-        <a href="{% url 'post_url' post.slug %}" class="link" target="_blank"><img src="media/{{ post.image }}" alt="Фото {{ post.title }}" class="card__image"></a>
+        <a href="{% url 'post_url' post.slug %}" class="link" target="_blank"><img src="{{ post.image.url }}" alt="Фото {{ post.title }}" class="card__image"></a>
         <div class="card__body">
             <a class="card__title link" href="{% url 'post_url' post.slug %}" target="_blank">{{ post.title }}</a>
             <ul class="card__items">
@@ -34,7 +34,7 @@
             </ul>
             <div class="card__items card__items_column">
                 <p class="card__text"><span class="icon-time"></span> {{ post.time }} мин.</p>
-                <p class="card__text"><span class="icon-user"></span> <a href="author{% url 'post_url' post.author %}" style="color: black">{{ post.author }}</a></p>
+                <p class="card__text"><span class="icon-user"></span> <a href="{% url 'author_url' post.author %}" style="color: black">{{ post.author }}</a></p>
             </div>
         </div>
         {% if request.user.is_authenticated %}
@@ -77,6 +77,8 @@
  {% endif %}
 
 </main>
+{% endblock %}
+
     {% block script %}
     {% if request.user.is_authenticated %}
 <script src={% static '/js/components/Favorites.js' %}></script>
@@ -92,5 +94,4 @@
 
     
     {% endblock %}
-    {% endblock %}
-
+    
