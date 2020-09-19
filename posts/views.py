@@ -9,15 +9,16 @@ from django.http import JsonResponse
 from .services import get_ingredients
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from .services import get_fav_list, get_buying_list
 
 def index(request):
     post_list = Recipe.objects.order_by("-id").all()
     paginator = Paginator(post_list, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
+    fav_list = get_fav_list(request)
     return render(request, "index.html", {"page": page,
-                                          "paginator": paginator})
+                                          "paginator": paginator, 'fav_list': fav_list})
 
 
 def add_recipe(request):
@@ -48,12 +49,7 @@ def add_recipe(request):
     return render(request, 'formRecipe.html', {'form': form, 'tags': tags, })
 
 
-def shop_list(request):
-    return render(request, 'shopList.html',)
 
-
-def favorites(request):
-    return render(request, 'favorite.html',)
 
 
 class Ingredients(View):
@@ -93,21 +89,19 @@ def profile_view(request, username):
     paginator = Paginator(post_list, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-
     subsc = False
-    # fav = False
+    fav_list = get_fav_list(request)
+    buying_list = get_buying_list(request)
     if request.user.is_authenticated:
         subsc = Subscription.objects.filter(
             user=request.user, author=user).exists()
-        # fav = Favorite.objects.filter(
-        #     user=request.user, recipe=post).exists()
-        # buying = ShoppingList.objects.filter(
-        #     user=request.user, recipe=post).exists()
+    #     buying = ShoppingList.objects.filter(
+    #         user=request.user, recipe=post).exists()
     # else:
     #     buying = request.session.get('shopping_list', [])
     #     buying = post.id in buying
     return render(request, "profile.html", {"page": page,
-                                            "paginator": paginator, 'user': user, 'subsc': subsc,})
+                                            "paginator": paginator, 'user': user, 'subsc': subsc, 'fav_list': fav_list, 'buying_list': buying_list})
 
 
 class RecipeEdit(LoginRequiredMixin, View):

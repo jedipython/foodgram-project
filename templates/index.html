@@ -4,6 +4,7 @@
 {% load static %}
 {% block style %}<link rel="stylesheet" href={% static "/pages/index.css" %}>{% endblock %}
 {% block content %}
+{% csrf_token %}
 <div class="main__header">
     <h1 class="main__title">Рецепты</h1>
     <ul class="tags">
@@ -41,7 +42,8 @@
         <div class="card__footer">
             
             <button class="button button_style_light-blue" name="purchases" data-out><span class="icon-plus button__icon"></span>Добавить в покупки</button>
-            <button class="button button_style_none" name="favorites" data-out><span class="icon-favorite"></span></button>
+
+            <button class="button button_style_none" name="favorites" {% if not post.id in fav_list %}data-out{% endif %}><span class="icon-favorite {% if post.id in fav_list %}icon-favorite_active{% endif %}"></span></button>
            
         </div>
         {% endif %}
@@ -80,18 +82,24 @@
 {% endblock %}
 
     {% block script %}
-    {% if request.user.is_authenticated %}
-<script src={% static '/js/components/Favorites.js' %}></script>
-<script src={% static '/js/components/Subscribe.js' %}></script>
-{% else %}
-{% endif %}
-    <script src={% static "/js/components/MainCards.js" %}></script>
-    <script src={% static "/js/config/config.js" %}></script>
-    <script src={% static "/js/components/CardList.js" %}></script>
-    <script src={% static "/js/components/Header.js" %}></script>
-    <script src={% static "/js/api/Api.js" %}></script>
-    <script src={% static "indexNotAuth.js" %}></script>
 
+    <script src="{% static 'js/config/config.js' %}"></script>
+        {% if user.is_authenticated %}
+        <script src="{% static 'js/components/Purchases.js' %}"></script>
+        <script src="{% static 'js/components/Favorites.js' %}"></script>
+        <script src="{% static 'js/components/Subscribe.js' %}"></script>
+        <script src="{% static 'js/components/MainCards.js' %}"></script>
+        <script src="{% static 'js/components/CardList.js' %}"></script>    
+        <script src="{% static 'js/components/Header.js' %}"></script>
+        <script src="{% static 'js/api/Api.js' %}"></script>
+        <script src="{% static 'indexAuth.js' %}"></script>
+        {% else %}
+        <script src="{% static 'js/components/Purchases.js' %}"></script>
+        <script src="{% static 'js/components/MainCards.js' %}"></script>
+        <script src="{% static 'js/components/Header.js' %}"></script>
+        <script src="{% static 'js/api/Api.js' %}"></script>
+        <script src="{% static 'indexNotAuth.js' %}"></script>
+        {% endif %}
     
     {% endblock %}
     

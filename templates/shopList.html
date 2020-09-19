@@ -1,32 +1,11 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Список покупок</title>
-    <link rel="stylesheet" href="./pages/shopList.css">
-</head>
-<body class="body">
-<header class="header">
-    <nav class="nav">
-        <div class="nav__container container">
-            <ul class="nav__items list">
-                <li class="nav__item"><a href="#" class="nav__link link">Рецепты</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Мои подписки</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Создать рецепт</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Избранное</a></li>
-                <li class="nav__item nav__item_active"><a href="#" class="nav__link link">Список покупок</a><span class="badge badge_style_blue nav__badge" id="counter">4</span></li>
-            </ul>
-            <ul class="nav__items list">
-                <li class="nav__item"><a href="#" class="nav__link link">Изменить пароль</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Выход</a></li>
-            </ul>
-        </div>
-    </nav>
-</header>
-<main class="main container">
+{% extends "base.html" %} 
+{% block title %} Страница покупок {% endblock %}
+{% load user_filters %}
+{% load static %}
+{% block style %} <link rel="stylesheet" href={% static "pages/shopList.css" %}>{% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="main__header">
     <div class="main__header">
         <h1 class="main__title">Список покупок</h1>
     </div>
@@ -71,10 +50,19 @@
         </ul>
     </div>
 </footer>
-<script src="./js/config/config.js"></script>
-<script src="./js/components/Header.js"></script>
-<script src="./js/components/ShopList.js"></script>
-<script src="./js/api/Api.js"></script>
-<script src="shopList.js"></script>
+
 </body>
 </html>
+
+
+{% endblock %}
+{% block script %}
+
+
+<script src="{% static 'js/components/Header.js' %}"></script>
+<script src="{% static 'js/components/ShopList.js' %}"></script>
+<script src="{% static 'js/api/Api.js' %}"></script>
+<script src="{% static 'shopList.js' %}"></script>
+
+
+{% endblock %}

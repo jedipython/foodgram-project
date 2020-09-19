@@ -4,6 +4,7 @@
 {% load static %}
 {% block style %} <link rel="stylesheet" href={% static "/pages/index.css" %}>{% endblock %}
 {% block content %}
+{% csrf_token %}
 <div class="main__header">
     <h1 class="main__title">{{ user.username }}</h1>
     <ul class="tags">
@@ -49,9 +50,12 @@
         {% if request.user.is_authenticated %}
         <div class="card__footer">
             
+            {% if not post.id in buying_list %}
             <button class="button button_style_light-blue" name="purchases" data-out><span class="icon-plus button__icon"></span>Добавить в покупки</button>
-            <button class="button button_style_none" name="favorites" data-out><span class="icon-favorite"></span></button>
-           
+        {% else %}
+            <button class="button button_style_light-blue" name="purchases"><span class="icon-plus button__icon"></span>Рецепт добавлен</button>
+        {% endif %}
+        <button class="button button_style_none" name="favorites" {% if not post.id in fav_list %}data-out{% endif %}><span class="icon-favorite {% if post.id in fav_list %}icon-favorite_active{% endif %}"></span></button>           
         </div>
         {% endif %}
     </div>
@@ -84,28 +88,23 @@
 </main>
 {% endblock %}
 {% block script %}
+
 <script src="{% static 'js/config/config.js' %}"></script>
-{% if user.is_authenticated %}
-<script src="{% static 'js/components/Purchases.js' %}"></script>
-<script src="{% static 'js/components/Favorites.js' %}"></script>
-<script src="{% static 'js/components/Subscribe.js' %}"></script>
+    {% if user.is_authenticated %}
+    <script src="{% static 'js/components/Purchases.js' %}"></script>
+    <script src="{% static 'js/components/Favorites.js' %}"></script>
+    <script src="{% static 'js/components/Subscribe.js' %}"></script>
+    <script src="{% static 'js/components/MainCards.js' %}"></script>
+    <script src="{% static 'js/components/CardList.js' %}"></script>    
+    <script src="{% static 'js/components/Header.js' %}"></script>
+    <script src="{% static 'js/api/Api.js' %}"></script>
+    <script src="{% static 'indexAuth.js' %}"></script>
+    {% else %}
+    <script src="{% static 'js/components/Purchases.js' %}"></script>
+    <script src="{% static 'js/components/MainCards.js' %}"></script>
+    <script src="{% static 'js/components/Header.js' %}"></script>
+    <script src="{% static 'js/api/Api.js' %}"></script>
+    <script src="{% static 'indexNotAuth.js' %}"></script>
+    {% endif %}
 
-<script src="{% static 'js/components/MainCards.js' %}"></script>
-<script src="{% static 'js/components/SingleCard.js' %}"></script>
-<script src="{% static 'js/components/Header.js' %}"></script>
-
-<script src="{% static 'js/api/Api.js' %}"></script>
-{% else %}
-<script src={% static "/js/components/MainCards.js" %}></script>
-
-<script src={% static "/js/components/Purchases.js" %}></script>
-<script src={% static "/js/components/Favorites.js" %}></script>
-<script src={% static "/js/components/Subscribe.js" %}></script>
-
-<script src={% static "/js/components/AuthorRecipe.js" %}></script>
-<script src={% static "/js/components/Header.js" %}></script>
-
-<script src={% static "/js/api/Api.js" %}></script>
-<script src={% static "authorRecipe.js" %}></script>
-{% endif %}
 {% endblock %}

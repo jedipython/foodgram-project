@@ -1,3 +1,9 @@
+import json
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import View
+from django.http import JsonResponse
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import CreateView
 from django.core.mail import send_mail
 from .forms import UserCreationForm
@@ -5,8 +11,8 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
-from posts.models import Subscription
-
+from posts.models import Subscription, Favorite, Recipe, User, ShoppingList
+from posts.services import get_fav_list, get_id_recipe, create_buy, create_buy_guest
 
 class SignUp(CreateView):
     form_class = UserCreationForm
@@ -49,8 +55,63 @@ def my_subscriptions(request):
     subscriptions = Subscription.objects.filter(user=request.user).all()
     return render(request, 'my_subscription.html', context={'subscriptions': subscriptions})
 
+def my_purchases(request):
+    """ Отдает страницу мои покупки"""
+    subscriptions = Subscription.objects.filter(user=request.user).all()
+    return render(request, 'shopList.html', context={'subscriptions': subscriptions})
+
 
 def my_favorites(request):
     """ Отдает страницу избранное"""
-    subscriptions = Subscription.objects.filter(user=request.user).all()
-    return render(request, 'favorite.html', context={'subscriptions': subscriptions})
+    recipes = Favorite.objects.filter(user=request.user).all()
+    fav_list = get_fav_list(request)
+    return render(request, 'favorite.html', context={'recipes': recipes, 'fav_list': fav_list})
+
+
+class Favorites(LoginRequiredMixin, View):
+    def post(self, request):
+        recipe_id = json.loads(request.body)['id']
+        recipe = get_object_or_404(Recipe, id=recipe_id)
+        try:
+            Favorite.objects.get_or_create(
+                user=request.user, recipe=recipe)
+
+            return JsonResponse({'success': True})
+
+        except:
+            return JsonResponse({'success': False})
+
+    def delete(self, request, id):
+        """ Удаляем подписку """
+        try:
+            fav = Favorite.objects.get(user=request.user, recipe=id)
+        except Favorite.DoesNotExist:
+            results = {'success': False}
+        else:
+            fav.delete()
+            results = {'success': True}
+
+        return JsonResponse(results, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
+class Purchases(LoginRequiredMixin, View):
+    def post(self, request):
+        recipe_id = get_id_recipe(request)
+        if request.user.is_authenticated:    
+            results = create_buy(request, recipe_id)
+        else:
+            results = create_buy_guest(request, recipe_id)
+
+        return JsonResponse(results, safe=False, json_dumps_params={'ensure_ascii': False})
+    
+    def delete(self, request, id):
+        try:
+            buy = ShoppingList.objects.get(user=request.user, recipe=id)
+        except ShoppingList.DoesNotExist:
+            results = {'success': False}
+        else:
+            buy.delete()
+            results = {'success': True}
+        return JsonResponse(results, safe=False, json_dumps_params={'ensure_ascii': False})
+
+
