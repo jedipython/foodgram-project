@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
+from posts.models import Subscription
 
 
 class SignUp(CreateView):
@@ -43,5 +44,13 @@ def change_password(request):
     })
 
 
-def subscribes(request):
-    return render(request, "myFollow.html")
+def my_subscriptions(request):
+    """ Отдает страницу мои подписки"""
+    subscriptions = Subscription.objects.filter(user=request.user).all()
+    return render(request, 'my_subscription.html', context={'subscriptions': subscriptions})
+
+
+def my_favorites(request):
+    """ Отдает страницу избранное"""
+    subscriptions = Subscription.objects.filter(user=request.user).all()
+    return render(request, 'favorite.html', context={'subscriptions': subscriptions})

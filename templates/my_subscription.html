@@ -3,138 +3,55 @@
 {% load static %}
 {% block style %} <link rel="stylesheet" href={% static "/pages/myFollow.css" %}>{% endblock %}
 {% block content %}
+{% csrf_token %}
 <div class="main__header">
     <h1 class="main__title">Мои подписки</h1>
 </div>
 <div class="card-list">
-    <div class="card-user" data-author="700">
+    {% for sub in subscriptions %}
+    {% with subscriptions_recipes=sub.get_recipes %}
+    <div class="card-user" data-author="{{ sub.author.id }}">
     <div class="card-user__header">
-        <h2 class="card-user__title">Вероника Чернова</h2>
+        <h2 class="card-user__title">{{ sub.author }}</h2>
     </div>
     <div class="card-user__body">
         <ul class="card-user__items">
+            {% for recipe in subscriptions_recipes %}
+            {% if forloop.counter < 4 %}
             <li class="card-user__item">
                 <div class="recipe">
-                    <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                    <h3 class="recipe__title">Французские тосты</h3>
-                    <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
+                    <img src="{{ recipe.image.url }}" alt="фото {{ recipe.title }}" class="recipe__image">
+                    <h3 class="recipe__title">{{ recipe.title }}</h3>
+                    <p class="recipe__text"><span class="icon-time"></span> {{ recipe.time }} мин.</p>
                 </div>
             </li>
+            {% endif %}
+            {% endfor %}
+            {% if forloop.counter > 3 %}
             <li class="card-user__item">
-                <div class="recipe">
-                    <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                    <h3 class="recipe__title">Французские тосты</h3>
-                    <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                </div>
+                <a href="{% url 'author_url' sub.author.username %}" class="card-user__link link">Еще рецептов {{ subscriptions_recipes.count|add:-3 }}</a>
             </li>
-            <li class="card-user__item">
-                <div class="recipe">
-                    <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                    <h3 class="recipe__title">Французские тосты</h3>
-                    <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                </div>
-            </li>
-            <li class="card-user__item">
-                <a href="#" class="card-user__link link">Еще 7 рецептов...</a>
-            </li>
+            {% endif %}
         </ul>
     </div>
     <div class="card-user__footer">
         <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
     </div>
 </div>
-    <div class="card-user" data-author="707">
-        <div class="card-user__header">
-            <h2 class="card-user__title">Вероника Чернова</h2>
-        </div>
-        <div class="card-user__body">
-            <ul class="card-user__items">
-                <li class="card-user__item">
-                    <div class="recipe">
-                        <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                        <h3 class="recipe__title">Французские тосты</h3>
-                        <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                    </div>
-                </li>
-                <li class="card-user__item">
-                    <div class="recipe">
-                        <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                        <h3 class="recipe__title">Французские тосты</h3>
-                        <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                    </div>
-                </li>
-                <li class="card-user__item">
-                    <div class="recipe">
-                        <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                        <h3 class="recipe__title">Французские тосты</h3>
-                        <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                    </div>
-                </li>
-                <li class="card-user__item">
-                    <a href="#" class="card-user__link link">Еще 7 рецептов...</a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-user__footer">
-            <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
-        </div>
-    </div>
-    <div class="card-user" data-author="7091">
-        <div class="card-user__header">
-            <h2 class="card-user__title">Вероника Чернова</h2>
-        </div>
-        <div class="card-user__body">
-            <ul class="card-user__items">
-                <li class="card-user__item">
-                    <div class="recipe">
-                        <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                        <h3 class="recipe__title">Французские тосты</h3>
-                        <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                    </div>
-                </li>
-                <li class="card-user__item">
-                    <div class="recipe">
-                        <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                        <h3 class="recipe__title">Французские тосты</h3>
-                        <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                    </div>
-                </li>
-                <li class="card-user__item">
-                    <div class="recipe">
-                        <img src="../media/testCardImg.png" alt="какой-то-текст" class="recipe__image">
-                        <h3 class="recipe__title">Французские тосты</h3>
-                        <p class="recipe__text"><span class="icon-time"></span> 20 мин.</p>
-                    </div>
-                </li>
-                <li class="card-user__item">
-                    <a href="#" class="card-user__link link">Еще 7 рецептов...</a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-user__footer">
-            <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться</button>
-        </div>
-    </div>
+{% endwith %}
+{% endfor %}
 </div>
-<nav class="pagination" aria-label="Search results pages">
-    <ul class="pagination__container">
-        <li class="pagination__item"><a class="pagination__link link" href="#"><span class="icon-left"></span></a></li>
-        <li class="pagination__item pagination__item_active"><a class="pagination__link link" href="#">1</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#">2</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#">3</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#">4</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#">5</a></li>
-        <li class="pagination__item"><a class="pagination__link link" href="#"><span class="icon-right"></span></a></li>
-    </ul>
-</nav>
+{% include 'paginator.html' with recipes=subscriptions %}   
 </main>
-{% block script %}
-<script src="./js/config/config.js"></script>
-<script src="./js/components/MainCards.js"></script>
-<script src="./js/components/MyFollow.js"></script>
-<script src="./js/components/Subscribe.js"></script>
-<script src="./js/components/Header.js"></script>
-<script src="./js/api/Api.js"></script>
-<script src="myFollow.js"></script>
 {% endblock %}
+{% block script %}
+<script src="{% static '/js/config/config.js' %}"></script>
+<script src="{% static 'js/components/MainCards.js' %}"></script>
+<script src="{% static '/js/components/MyFollow.js' %}"></script>
+<script src="{% static 'js/components/Subscribe.js' %}"></script>
+<script src="{% static 'js/components/Header.js' %}"></script>
+<script src="{% static 'js/api/Api.js' %}"></script>
+<script src="{% static 'myFollow.js' %}"></script>
+
+
 {% endblock %}

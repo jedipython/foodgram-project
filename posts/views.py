@@ -93,8 +93,21 @@ def profile_view(request, username):
     paginator = Paginator(post_list, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
+
+    subsc = False
+    # fav = False
+    if request.user.is_authenticated:
+        subsc = Subscription.objects.filter(
+            user=request.user, author=user).exists()
+        # fav = Favorite.objects.filter(
+        #     user=request.user, recipe=post).exists()
+        # buying = ShoppingList.objects.filter(
+        #     user=request.user, recipe=post).exists()
+    # else:
+    #     buying = request.session.get('shopping_list', [])
+    #     buying = post.id in buying
     return render(request, "profile.html", {"page": page,
-                                            "paginator": paginator})
+                                            "paginator": paginator, 'user': user, 'subsc': subsc,})
 
 
 class RecipeEdit(LoginRequiredMixin, View):
@@ -106,41 +119,23 @@ class RecipeDelete(LoginRequiredMixin, View):
 
 
 class Subscriptions(LoginRequiredMixin, View):
-    
-    def get(self, request):
-        author = request.GET.get('author')
-        if 'sub' in request.GET:
-            get_object_or_404(Subscription.objects.select_related('author'),
-                              user=request.user, author__username=author).delete()
-        else:
-            self.post(request, author)
-
-        return redirect('author_url',  username=author)
 
     def post(self, request):
-        """ Создание подписки на автора если ее еще нет. """
-       
-        author = json.loads(request.body)['id']
-        print(author)
-        user = request.user
-        subs, created = Subscription.objects.get_or_create(
-            defaults={
-                'user': user,
-                'author': author,
-            },
-            user=user,
-            author=author,
-        )
-        if created:
-            results = {'success': True}
-        else:
-            results = {'success': False}
-        return JsonResponse(results, safe=False, json_dumps_params={'ensure_ascii': False})
+        author_id = json.loads(request.body)['id']
+        author = get_object_or_404(User, id=author_id)
+
+        try:
+            Subscription.objects.get_or_create(
+                user=request.user, author=author)
+
+            return JsonResponse({'success': True})
+
+        except:
+            return JsonResponse({'success': False})
 
     def delete(self, request, id):
         """ Удаляем подписку если она существует. """
-        author = get_object_or_404(
-            Recipe.objects.select_related('author'), id=id).author
+        author = get_object_or_404(User, id=id)
         try:
             subs = Subscription.objects.get(user=request.user, author=author)
         except Subscription.DoesNotExist:

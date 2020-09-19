@@ -77,6 +77,9 @@ class Subscription(models.Model):
                              related_name='user')
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='author')
+    
+    def get_recipes(self):
+        return Recipe.objects.select_related('author').filter(author__username=self.author)
 
 
 class Favorite(models.Model):
