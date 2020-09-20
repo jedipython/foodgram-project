@@ -83,6 +83,10 @@ def post_view(request, slug):
                                          'buying': buying, })
 
 
+def single_page(request):
+    return render(request, 'customPage.html')
+    
+
 def profile_view(request, username):
     user = get_object_or_404(User, username=username)
     post_list = Recipe.objects.filter(author=user).order_by("-id")

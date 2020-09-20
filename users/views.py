@@ -15,6 +15,7 @@ from posts.models import Subscription, Favorite, Recipe, User, ShoppingList, Amo
 from posts.services import get_fav_list, get_id_recipe, create_buy, create_buy_guest
 from django.http import HttpResponse, JsonResponse
 
+
 class SignUp(CreateView):
     form_class = UserCreationForm
     success_url = "/auth/login/"
@@ -52,18 +53,16 @@ def change_password(request):
 
 
 def my_subscriptions(request):
-    """ Отдает страницу мои подписки"""
     subscriptions = Subscription.objects.filter(user=request.user).all()
     return render(request, 'my_subscription.html', context={'subscriptions': subscriptions})
 
+
 def my_purchases(request):
-    """ Отдает страницу мои покупки"""
     purchases = ShoppingList.objects.filter(user=request.user).all()
     return render(request, 'shopList.html', context={'purchases': purchases})
 
 
 def my_favorites(request):
-    """ Отдает страницу избранное"""
     recipes = Favorite.objects.filter(user=request.user).all()
     fav_list = get_fav_list(request)
     return render(request, 'favorite.html', context={'recipes': recipes, 'fav_list': fav_list})
@@ -83,7 +82,6 @@ class Favorites(LoginRequiredMixin, View):
             return JsonResponse({'success': False})
 
     def delete(self, request, id):
-        """ Удаляем подписку """
         try:
             fav = Favorite.objects.get(user=request.user, recipe=id)
         except Favorite.DoesNotExist:
@@ -98,13 +96,13 @@ class Favorites(LoginRequiredMixin, View):
 class Purchases(LoginRequiredMixin, View):
     def post(self, request):
         recipe_id = get_id_recipe(request)
-        if request.user.is_authenticated:    
+        if request.user.is_authenticated:
             results = create_buy(request, recipe_id)
         else:
             results = create_buy_guest(request, recipe_id)
 
         return JsonResponse(results, safe=False, json_dumps_params={'ensure_ascii': False})
-    
+
     def delete(self, request, id):
         try:
             buy = ShoppingList.objects.get(user=request.user, recipe=id)
@@ -120,7 +118,8 @@ def get_shop_list(request):
     result = create_shopping_list(request)
     filename = 'ShopList.txt'
     response = HttpResponse(result, content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename={0}'.format(filename)
+    response['Content-Disposition'] = 'attachment; filename={0}'.format(
+        filename)
     return response
 
 
@@ -135,7 +134,7 @@ def create_shopping_list(request):
         ingredient_list = recipe.recipe.all()
         for i in ingredient_list:
             new = i.create_shopping_list()
-            ingredients.append(new)    
+            ingredients.append(new)
     result = {}
     for i in ingredients:
         if not i[0] in result:
