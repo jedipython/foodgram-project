@@ -11,8 +11,9 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
-from posts.models import Subscription, Favorite, Recipe, User, ShoppingList
+from posts.models import Subscription, Favorite, Recipe, User, ShoppingList, Amount
 from posts.services import get_fav_list, get_id_recipe, create_buy, create_buy_guest
+from django.http import HttpResponse, JsonResponse
 
 class SignUp(CreateView):
     form_class = UserCreationForm
@@ -57,8 +58,8 @@ def my_subscriptions(request):
 
 def my_purchases(request):
     """ Отдает страницу мои покупки"""
-    subscriptions = Subscription.objects.filter(user=request.user).all()
-    return render(request, 'shopList.html', context={'subscriptions': subscriptions})
+    purchases = ShoppingList.objects.filter(user=request.user).all()
+    return render(request, 'shopList.html', context={'purchases': purchases})
 
 
 def my_favorites(request):
@@ -115,3 +116,39 @@ class Purchases(LoginRequiredMixin, View):
         return JsonResponse(results, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
+def get_shop_list(request):
+    result = create_shopping_list(request)
+    filename = 'ShopList.txt'
+    response = HttpResponse(result, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename={0}'.format(filename)
+    return response
+
+
+def create_shopping_list(request):
+    if request.user.is_authenticated:
+        recipes = Recipe.objects.filter(buy_recipe__user=request.user)
+    else:
+        buying_list = request.session.get('shopping_list', [])
+        recipes = Recipe.objects.filter(id__in=buying_list)
+    ingredients = []
+    for recipe in recipes:
+        ingredient_list = recipe.recipe.all()
+        for i in ingredient_list:
+            new = i.create_shopping_list()
+            ingredients.append(new)    
+    result = {}
+    for i in ingredients:
+        if not i[0] in result:
+            result[i[0]] = i[1]
+        else:
+            result[i[0]] += i[1]
+
+    content = []
+    for key, value in result.items():
+        for i in ingredients:
+            if i[0] == key:
+                ing = f'{key} - {value} {i[2]}\n'
+                content.append(ing)
+                break
+
+    return content

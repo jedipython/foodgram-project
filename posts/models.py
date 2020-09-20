@@ -69,7 +69,10 @@ class Amount(models.Model):
         Recipe, on_delete=models.CASCADE, related_name="recipe")
 
     def __str__(self):
-        return self.ingredient.title
+        return f'{self.ingredient.title} - {self.units} {self.ingredient.dimension}'
+
+    def create_shopping_list(self):
+        return self.ingredient.title, self.units, self.ingredient.dimension
 
 
 class Subscription(models.Model):
