@@ -12,7 +12,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 from posts.models import Subscription, Favorite, Recipe, User, ShoppingList, Amount
-from posts.services import get_fav_list, get_id_recipe, create_buy, create_buy_guest
+from posts.services import get_fav_list, get_id_recipe, create_buy, create_buy_guest, RecipeIFavriteListView
 from django.http import HttpResponse, JsonResponse
 
 
@@ -62,10 +62,16 @@ def my_purchases(request):
     return render(request, 'shopList.html', context={'purchases': purchases})
 
 
-def my_favorites(request):
-    recipes = Favorite.objects.filter(user=request.user).all()
-    fav_list = get_fav_list(request)
-    return render(request, 'favorite.html', context={'recipes': recipes, 'fav_list': fav_list})
+class FavoriteIndex(RecipeIFavriteListView, View):
+    def get(self, request):
+        recipes = self.get_queryset
+        fav_list = get_fav_list(request)
+        all_tags = self.get_all_tags
+        # recipes = Favorite.objects.filter(user=request.user).all()
+        fav_list = get_fav_list(request)
+        return render(request, 'favorite.html', context={'recipes': recipes, 'fav_list': fav_list, 'all_tags': all_tags})
+
+
 
 
 class Favorites(LoginRequiredMixin, View):

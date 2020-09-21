@@ -1,7 +1,9 @@
 import json
 
-from .models import Favorite, ShoppingList, Recipe
+from .models import Favorite, ShoppingList, Recipe, Tag
 from django.shortcuts import get_object_or_404
+from django.views.generic.list import ListView
+
 
 def get_ingredients(request):
 
@@ -43,7 +45,6 @@ def get_buying_list(request):
     return buying_list
 
 
-
 def create_buy(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     user = request.user
@@ -65,8 +66,52 @@ def create_buy_guest(request, recipe_id):
         recipe_id = int(recipe_id)
         if not recipe_id in shopping_list:
             shopping_list.append(recipe_id)
-            request.session['shopping_list'] =shopping_list
+            request.session['shopping_list'] = shopping_list
     else:
         request.session['shopping_list'] = [recipe_id]
 
     return {'success': True}
+
+
+class RecipeIndexListView(ListView):
+    model = Recipe
+    template_name = 'index.html'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if 'filters' in self.request.GET:
+            filters = self.request.GET.getlist('filters')
+            qs = qs.filter(tags__name__in=filters).distinct()
+
+        return qs
+
+    def get_all_tags(self):
+        return Tag.objects.all()
+
+    def context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'all_tags': self.get_all_tags()})
+        return context
+
+
+class RecipeIFavriteListView(ListView):
+    model = Favorite
+    template_name = 'favorite.html'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if 'filters' in self.request.GET:
+            filters = self.request.GET.getlist('filters')
+            qs = qs.filter(recipe__tags__name__in=filters).distinct()
+
+        return qs
+
+    def get_all_tags(self):
+        return Tag.objects.all()
+
+    def context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'all_tags': self.get_all_tags()})
+        return context

@@ -8,31 +8,8 @@ from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from .services import get_ingredients
 from django.views import View
-from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .services import get_fav_list, get_buying_list
-
-
-class RecipeIndexListView(ListView):
-    model = Recipe
-    template_name = 'index.html'
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-
-        if 'filters' in self.request.GET:
-            filters = self.request.GET.getlist('filters')
-            qs = qs.filter(tags__name__in=filters).distinct()
-
-        return qs
-
-    def get_all_tags(self):
-        return Tag.objects.all()
-
-    def context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({'all_tags': self.get_all_tags()})
-        return context
+from .services import get_fav_list, get_buying_list, RecipeIndexListView
 
 
 class RecipeIndex(RecipeIndexListView, View):
