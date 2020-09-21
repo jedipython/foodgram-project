@@ -1,28 +1,29 @@
 {% extends "base.html" %} 
 {% block title %} Рецепты {% endblock %}
 {% load user_filters %}
+{% load posts_extras %}
 {% load static %}
 {% block style %}<link rel="stylesheet" href={% static "/pages/index.css" %}>{% endblock %}
 {% block content %}
 {% csrf_token %}
 <div class="main__header">
     <h1 class="main__title">Рецепты</h1>
+
     <ul class="tags">
-        <form method="GET">
-            {%  for tag, tag_value in form.tags.field.choices %}
-            <div class="tags__item">
-                <input 
-                    type="checkbox" 
-                    name="tags" 
-                    value="{{ tag.pk }}"
-                    id="id_{{ tag.value }}"
-                    class="tags__checkbox tags__checkbox_style_{{ tag.style }}">
-                <label for="id_{{ tag.value }}" class="tags__label">{{ tag.name }}</label>
-            </div>
-            {% endfor %}
-        
-    </form>
+           
+            {% with filter_values=request.GET|get_filter_values %}
+            {% for tag in all_tags %}
+            <li class="tags__item">
+                <a 
+                    id="{{ tag.value }}" 
+                    class="tags__checkbox tags__checkbox_style_{{ tag.style }} {% if tag.name in filter_values %}tags__checkbox_active{% endif %}" href="/?{{ request|get_filter_link:tag }}"></a>
+            <span class="tags__label">{{ tag.name }}</span>
+                
         </li>
+            {% endfor %}
+            {% endwith %}
+        
+        
     </ul>
 </div>
 <div class="card-list">
@@ -105,4 +106,3 @@
         {% endif %}
     
     {% endblock %}
-    

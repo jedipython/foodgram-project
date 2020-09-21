@@ -8,17 +8,39 @@ from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
 from .services import get_ingredients
 from django.views import View
+from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .services import get_fav_list, get_buying_list
 
-def index(request):
-    post_list = Recipe.objects.order_by("-id").all()
-    paginator = Paginator(post_list, 10)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
-    fav_list = get_fav_list(request)
-    return render(request, "index.html", {"page": page,
-                                          "paginator": paginator, 'fav_list': fav_list})
+
+class RecipeIndexListView(ListView):
+    model = Recipe
+    template_name = 'index.html'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if 'filters' in self.request.GET:
+            filters = self.request.GET.getlist('filters')
+            qs = qs.filter(tags__name__in=filters).distinct()
+
+        return qs
+
+    def get_all_tags(self):
+        return Tag.objects.all()
+
+    def context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'all_tags': self.get_all_tags()})
+        return context
+
+
+class RecipeIndex(RecipeIndexListView, View):
+    def get(self, request):
+        page = self.get_queryset
+        fav_list = get_fav_list(request)
+        all_tags = self.get_all_tags
+        return render(request, "index.html", {'page': page, 'fav_list': fav_list, 'all_tags': all_tags})
 
 
 def add_recipe(request):
@@ -47,9 +69,6 @@ def add_recipe(request):
 
     tags = Tag.objects.all()
     return render(request, 'formRecipe.html', {'form': form, 'tags': tags, })
-
-
-
 
 
 class Ingredients(View):
@@ -85,7 +104,7 @@ def post_view(request, slug):
 
 def single_page(request):
     return render(request, 'customPage.html')
-    
+
 
 def profile_view(request, username):
     user = get_object_or_404(User, username=username)
