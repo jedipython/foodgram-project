@@ -1,6 +1,7 @@
 {% extends "base.html" %} 
 {% block title %} Автор {% endblock %}
 {% load user_filters %}
+{% load posts_extras %}
 {% load static %}
 {% block style %} <link rel="stylesheet" href={% static "/pages/index.css" %}>{% endblock %}
 {% block content %}
@@ -8,25 +9,23 @@
 <div class="main__header">
     <h1 class="main__title">{{ user.username }}</h1>
     <ul class="tags">
+        {% with filter_values=request.GET|get_filter_values %}
+        {% for tag in all_tags %}
         <li class="tags__item">
-            <a id="breakfast" class="tags__checkbox tags__checkbox_style_orange tags__checkbox_active" href="#"></a>
-            <span class="tags__label">Завтрак</span>
-        </li>
-        <li class="tags__item">
-            <a id="lunch" class="tags__checkbox tags__checkbox_style_green tags__checkbox_active" href="#"></a>
-            <span for="lunch" class="tags__label">Обед</span>
-        </li>
-        <li class="tags__item">
-            <a id="dinner" class="tags__checkbox tags__checkbox_style_purple tags__checkbox_active" href="#"></a>
-            <label for="dinner" class="tags__label">Ужин</label>
-        </li>
-    </ul>
+            <a 
+                id="{{ tag.value }}" 
+                class="tags__checkbox tags__checkbox_style_{{ tag.style }} {% if tag.name in filter_values %}tags__checkbox_active{% endif %}" href="/author/{{ user.username }}/?{{ request|get_filter_link:tag }}"></a>
+        <span class="tags__label">{{ tag.name }}</span>     
+    </li>
+        {% endfor %}
+        {% endwith %}
+</ul>
 
-</div>
+</div>{% if request.user.is_authenticated %}
 <div class="author-subscribe" data-author="{{ user.id }}">
-    {% if request.user.is_authenticated %}
+    
     <p style="padding: 0 0 2em 0;"><button class="button button_style_light-blue button_size_subscribe" name="subscribe" {% if not subsc %}data-out>Подписаться на автора {% else %}><span class="icon-check button__icon"></span> Отписаться от автора{% endif %}</button></p>
-
+    
       
 {% endif %}
     
@@ -89,22 +88,18 @@
 {% endblock %}
 {% block script %}
 
-<script src="{% static 'js/config/config.js' %}"></script>
-    {% if user.is_authenticated %}
-    <script src="{% static 'js/components/Purchases.js' %}"></script>
-    <script src="{% static 'js/components/Favorites.js' %}"></script>
-    <script src="{% static 'js/components/Subscribe.js' %}"></script>
-    <script src="{% static 'js/components/MainCards.js' %}"></script>
-    <script src="{% static 'js/components/CardList.js' %}"></script>    
-    <script src="{% static 'js/components/Header.js' %}"></script>
-    <script src="{% static 'js/api/Api.js' %}"></script>
-    <script src="{% static 'indexAuth.js' %}"></script>
-    {% else %}
-    <script src="{% static 'js/components/Purchases.js' %}"></script>
-    <script src="{% static 'js/components/MainCards.js' %}"></script>
-    <script src="{% static 'js/components/Header.js' %}"></script>
-    <script src="{% static 'js/api/Api.js' %}"></script>
-    <script src="{% static 'indexNotAuth.js' %}"></script>
-    {% endif %}
+
+    <script src="{% static '/js/components/MainCards.js' %}"></script>
+
+    <script src="{% static '/js/components/Purchases.js' %}"></script>
+    <script src="{% static '/js/components/Favorites.js' %}"></script>
+    <script src="{% static '/js/components/Subscribe.js' %}"></script>
+  
+    <script src="{% static '/js/config/config.js' %}"></script>
+    <script src="{% static '/js/components/AuthorRecipe.js' %}"></script>
+    <script src="{% static '/js/components/Header.js' %}"></script>
+  
+    <script src="{% static '/js/api/Api.js' %}"></script>
+    <script src="{% static 'authorRecipe.js' %}"></script>
 
 {% endblock %}

@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from .services import get_ingredients
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .services import get_fav_list, get_buying_list, RecipeIndexListView
+from .services import get_fav_list, get_buying_list, RecipeIndexListView, ProfileIndexListView, assembly_ingredients, change_ingredients, get_ingredients_value_or_names
 
 
 class RecipeIndex(RecipeIndexListView, View):
@@ -83,33 +83,63 @@ def single_page(request):
     return render(request, 'customPage.html')
 
 
-def profile_view(request, username):
-    user = get_object_or_404(User, username=username)
-    post_list = Recipe.objects.filter(author=user).order_by("-id")
-    paginator = Paginator(post_list, 10)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
-    subsc = False
-    fav_list = get_fav_list(request)
-    buying_list = get_buying_list(request)
-    if request.user.is_authenticated:
-        subsc = Subscription.objects.filter(
-            user=request.user, author=user).exists()
-    #     buying = ShoppingList.objects.filter(
-    #         user=request.user, recipe=post).exists()
-    # else:
-    #     buying = request.session.get('shopping_list', [])
-    #     buying = post.id in buying
-    return render(request, "profile.html", {"page": page,
-                                            "paginator": paginator, 'user': user, 'subsc': subsc, 'fav_list': fav_list, 'buying_list': buying_list})
+
+class ProfileUser(ProfileIndexListView, View):
+    def get(self, request, username):
+        user = get_object_or_404(User, username=username)
+        page = self.get_queryset
+        all_tags = self.get_all_tags
+        # paginator = Paginator(post_list, 10)
+        # page_number = request.GET.get('page')
+        # page = paginator.get_page(page_number)
+        subsc = False
+        fav_list = get_fav_list(request)
+        buying_list = get_buying_list(request)
+        if request.user.is_authenticated:
+            subsc = Subscription.objects.filter(
+                user=request.user, author=user).exists()
+        return render(request, "profile.html", {"page": page, 'user': user, 'subsc': subsc, 'fav_list': fav_list, 'buying_list': buying_list, 'all_tags': all_tags})
 
 
 class RecipeEdit(LoginRequiredMixin, View):
-    pass
+
+    def get(self, request, slug):
+        recipe = get_object_or_404(Recipe, slug=slug)
+        if request.user != recipe.author:
+            return redirect('post_url', slug=recipe.slug)
+
+        form = AddRecipeForm(instance=recipe)
+        tags = Tag.objects.all()
+        return render(request, 'formRecipe.html', context={'form': form, 'recipe': recipe, 'tags': tags})
+
+    def post(self, request, slug):
+        recipe = get_object_or_404(Recipe, slug=slug)
+        if request.user != recipe.author:
+            return redirect('post_url', slug=recipe.slug)
+
+        ingredients = recipe.ingredients.all()
+        form = AddRecipeForm(request.POST, request.FILES, instance=recipe)
+        ingredients_names = get_ingredients_value_or_names(request, 'name')
+        ingredients_values = get_ingredients_value_or_names(request, 'value')
+        ingredients_list = assembly_ingredients(ingredients_names, ingredients_values, recipe)
+        if form.is_valid():
+            form.save()
+            change_ingredients(ingredients_list, ingredients, recipe)
+        else:
+            tags = Tag.objects.all()
+            return render(request, 'formRecipe.html', context={'form': form, 'recipe': recipe, 'tags': tags})
+
+        return redirect('post_url', slug=recipe.slug)
 
 
 class RecipeDelete(LoginRequiredMixin, View):
-    pass
+    def post(self, request, slug):
+        recipe = get_object_or_404(Recipe, slug=slug)
+        if request.user != recipe.author:
+            return redirect('post_url',  slug=recipe.slug)
+
+        recipe.delete()
+        return redirect('post_url')
 
 
 class Subscriptions(LoginRequiredMixin, View):

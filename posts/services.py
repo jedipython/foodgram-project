@@ -1,6 +1,6 @@
 import json
 
-from .models import Favorite, ShoppingList, Recipe, Tag
+from .models import Favorite, ShoppingList, Recipe, Tag, Ingredient, Amount
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 
@@ -17,6 +17,12 @@ def get_ingredients(request):
             ]
     return ingredients
 
+def get_ingredients_value_or_names(request, option):
+    ingredients = get_ingredients(request)
+    if option == 'name':
+        return list(ingredients.keys())
+    elif option == 'value':
+        return list(ingredients.values())
 
 def get_id_recipe(request):
     """ Функция получает id рецепта из тела запроса. """
@@ -115,3 +121,61 @@ class RecipeIFavriteListView(ListView):
         context = super().get_context_data(**kwargs)
         context.update({'all_tags': self.get_all_tags()})
         return context
+
+
+class ProfileIndexListView(ListView):
+    model = Recipe
+    template_name = 'profile.html'
+
+    def get_queryset(self):
+        qs = (super().get_queryset()).filter(
+            author__username=self.kwargs.get('username'))
+        if 'filters' in self.request.GET:
+            filters = self.request.GET.getlist('filters')
+            qs = qs.filter(tags__name__in=filters).distinct()
+
+        return qs
+
+    def get_all_tags(self):
+        return Tag.objects.all()
+
+    def context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({'all_tags': self.get_all_tags()})
+        return context
+
+
+def assembly_ingredients(ingredients_names, ingredients_values, recipe):
+    """ Функция получает два списка (список имен ингридиентов и их колличеством),
+        создает объекты в таблице IngredientQuantity если таких нет,
+        и возвращает список всех созданных объектов.
+    """
+    ingredients_list = []
+    for n, name in enumerate(ingredients_names):
+        try:
+           ingredient = Ingredient.objects.get(title=name)
+        except Ingredient.DoesNotExist:
+            return []
+        ingr_quan, created = Amount.objects.get_or_create(
+            defaults={
+                'ingredient': ingredient,
+                'units': ingredients_values[n],
+                'recipe': recipe,
+            },
+            recipe=recipe,
+            ingredient=ingredient,
+            units=ingredients_values[n]
+        )
+        ingredients_list.append(ingr_quan)
+
+    return ingredients_list
+
+
+
+def change_ingredients(ingredients_list, ingredients, recipe):
+    
+    """ Функция меняет список ингридиентов рецепта, если он был изменен. """
+    if ingredients_list != list(ingredients) and ingredients_list:
+        ingredients.delete()
+        print('ingredients_list', ingredients_list) 
+        recipe.recipe.ingredients.add(*ingredients_list)

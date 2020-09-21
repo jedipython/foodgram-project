@@ -67,11 +67,8 @@ class FavoriteIndex(RecipeIFavriteListView, View):
         recipes = self.get_queryset
         fav_list = get_fav_list(request)
         all_tags = self.get_all_tags
-        # recipes = Favorite.objects.filter(user=request.user).all()
         fav_list = get_fav_list(request)
         return render(request, 'favorite.html', context={'recipes': recipes, 'fav_list': fav_list, 'all_tags': all_tags})
-
-
 
 
 class Favorites(LoginRequiredMixin, View):
