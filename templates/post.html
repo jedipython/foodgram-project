@@ -23,11 +23,14 @@
                     {% for tag in post.tags.all %}
                     <li class="single-card__item"><span class="badge badge_style_{{ tag.style }}">{{  tag.name }}</span></li>
                     {% endfor %}
+                    {% if request.user == post.author %}<li class="single-card__item">  <a style="margin-left: 2.5em" href="{% url 'edit_recipes_url' post.slug %}" class="single-card__text">Редактировать рецепт</a></li>{% endif %}
                 </ul>
                 <div class="single-card__items single-card__items_column">
                     <p class="single-card__text"><span class="icon-time"></span> {{ post.time }} мин.</p>
                     <p class="single-card__text"><span class="icon-user"></span> {{ post.author.username }}</p>
+                    
                 </div>
+                {% if user.is_authenticated %}
                 <ul class="single-card__items">
                     <li class="single-card__item">
                         {% if not buying %}
@@ -40,7 +43,9 @@
                         <button class="button button_style_light-blue button_size_auto" name="subscribe" {% if not subsc %}data-out>Подписаться на автора {% else %}>
                             <span class="icon-check button__icon"></span> Отписаться от автора{% endif %}</button></li>
                {% endif %}
+               
                 </ul>
+                {% endif %}
                 <div class="single-card__section">
                     <h3 class="single-card__section-title">Ингредиенты:</h3>
                     <div class="single-card__items single-card__items_column">

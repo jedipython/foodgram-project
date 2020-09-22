@@ -1,5 +1,5 @@
 {% extends "base.html" %} 
-{% block title %} Автор {% endblock %}
+{% block title %} Автор {{ user.username }}{% endblock %}
 {% load user_filters %}
 {% load posts_extras %}
 {% load static %}

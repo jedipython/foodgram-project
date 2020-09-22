@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from .services import get_ingredients
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .services import get_fav_list, get_buying_list, RecipeIndexListView, ProfileIndexListView, assembly_ingredients, change_ingredients, get_ingredients_value_or_names
+from .services import get_fav_list, get_buying_list, RecipeIndexListView, ProfileIndexListView, assembly_ingredients, get_ingredients_value_or_names
 
 
 class RecipeIndex(RecipeIndexListView, View):
@@ -17,7 +17,10 @@ class RecipeIndex(RecipeIndexListView, View):
         page = self.get_queryset
         fav_list = get_fav_list(request)
         all_tags = self.get_all_tags
-        return render(request, "index.html", {'page': page, 'fav_list': fav_list, 'all_tags': all_tags})
+        paginator = Paginator(page, 3)
+        page_number = request.GET.get('page')
+        page = paginator.get_page(page_number)
+        return render(request, "index.html", {'paginator': paginator, 'page': page, 'fav_list': fav_list, 'all_tags': all_tags})
 
 
 def add_recipe(request):
@@ -121,10 +124,9 @@ class RecipeEdit(LoginRequiredMixin, View):
         form = AddRecipeForm(request.POST, request.FILES, instance=recipe)
         ingredients_names = get_ingredients_value_or_names(request, 'name')
         ingredients_values = get_ingredients_value_or_names(request, 'value')
-        ingredients_list = assembly_ingredients(ingredients_names, ingredients_values, recipe)
         if form.is_valid():
+            assembly_ingredients(ingredients_names, ingredients_values, recipe, ingredients)
             form.save()
-            change_ingredients(ingredients_list, ingredients, recipe)
         else:
             tags = Tag.objects.all()
             return render(request, 'formRecipe.html', context={'form': form, 'recipe': recipe, 'tags': tags})
@@ -133,13 +135,13 @@ class RecipeEdit(LoginRequiredMixin, View):
 
 
 class RecipeDelete(LoginRequiredMixin, View):
-    def post(self, request, slug):
+    def get(self, request, slug):
         recipe = get_object_or_404(Recipe, slug=slug)
         if request.user != recipe.author:
             return redirect('post_url',  slug=recipe.slug)
 
         recipe.delete()
-        return redirect('post_url')
+        return redirect('index')
 
 
 class Subscriptions(LoginRequiredMixin, View):

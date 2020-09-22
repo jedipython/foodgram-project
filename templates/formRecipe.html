@@ -93,7 +93,15 @@
             </div>
         </div>
         <div class="form__footer">
-            <button class="button button_style_blue">Создать рецепт</button>
+            {% if request.path == "/add_recipe/" %}
+            <button class="button button_style_blue" type="submit" id="submit-button">Создать рецепт</button>
+          {% else %}
+            <button class="button button_style_blue" type="submit" id="submit-button">Изменить рецепт</button>
+
+
+
+            <a href="{% url 'delete_recipes_url' recipe.slug %}" style="padding-left: 10px;" id="delete">Удалить</a>
+          {% endif %}
         </div>
     </form>
 </div>
