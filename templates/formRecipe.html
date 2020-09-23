@@ -100,7 +100,7 @@
 
 
 
-            <a href="{% url 'delete_recipes_url' recipe.slug %}" style="padding-left: 10px;" id="delete">Удалить</a>
+            <a href="{% url 'posts:delete_recipes_url' recipe.slug %}" style="padding-left: 10px;" id="delete">Удалить</a>
           {% endif %}
         </div>
     </form>

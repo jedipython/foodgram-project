@@ -41,7 +41,9 @@
 {% endwith %}
 {% endfor %}
 </div>
+{% if page.has_other_pages %} 
 {% include 'paginator.html' with recipes=subscriptions %}   
+{% endif %}
 </main>
 {% endblock %}
 {% block script %}

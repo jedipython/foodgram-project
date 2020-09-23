@@ -1,29 +1,22 @@
-{% if is_paginator %}
 <nav class="pagination" aria-label="Search results pages">
-  <ul class="pagination__container" data-page-total="{{ page_end }}">
-    {% if prev_url %}
-    <li class="pagination__item">
-      <a class="pagination__link link" href="{{ prev_url }}&{{ parameters }}"><span class="icon-left"></span></a></a>
-    </li>
-    {% endif %}
-  
-    {% for n in recipes.paginator.page_range  %}
-    {% if recipes.number == n %}
-        <li class="pagination__item pagination__item_active">
-      <a class="pagination__link link" href="?page={{ n }}&{{ parameters }}">{{ n }} </a>
-    </li>
-    {% elif  n > recipes.number|add:-3 and n < recipes.number|add:3 %}
-      <li class="pagination__item"><a class="pagination__link link" href="?page={{ n }}&{{ parameters }}">{{ n }}</a></li> 
-      {% endif %}       
-    {% endfor %}
-    <li class="pagination__item {% if not next_url or recipes.number|add:2 == page_end %}disabled{% endif %}">
-      <a class="pagination__link link" href="?page={{ page_end }}&{{ parameters }}">({{ page_end }})</a>
-    </li>
-    {% if next_url %}
-    <li class="pagination__item">
-      <a class="pagination__link link" href="{{ next_url }}&{{ parameters }}"><span class="icon-right"></span></a>
-    </li>
-    {% endif %}
-  </ul>
+  <ul class="pagination__container">
+      {% if items.has_previous %}
+              
+              <li class="pagination__item"><a class="pagination__link link" href="?page={{ items.previous_page_number }}{{ filters }}"><span class="icon-left"></span></a></li>
+    
+      {% endif %}
+      {% for i in paginator.page_range %}
+              {% if items.number == i %}
+              <li class="pagination__item pagination__item_active"><a class="pagination__link link" href="#">{{ i }}</a></li>
+              {% else %}
+              <li class="pagination__item"><a class="pagination__link link" href="?page={{ i }}{{ filters }}">{{ i }}</a></li>
+                              {% endif %}
+      {% endfor %}
+      {% if items.has_next %}
+      <li class="pagination__item"><a class="pagination__link link" href="?page={{ items.next_page_number }}{{ filters }}"><span class="icon-right"></span></a></li>
+      {% endif %}
+        
+        
+       
+    </ul>
 </nav>
- {% endif %} 

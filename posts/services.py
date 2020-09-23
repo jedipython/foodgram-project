@@ -88,7 +88,7 @@ class RecipeIndexListView(ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-
+        
         if 'filters' in self.request.GET:
             filters = self.request.GET.getlist('filters')
             qs = qs.filter(tags__name__in=filters).distinct()

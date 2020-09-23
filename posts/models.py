@@ -47,6 +47,7 @@ class Recipe(models.Model):
     tags = models.ManyToManyField(Tag)
     time = models.IntegerField()
     slug = models.SlugField(editable=False, unique=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if not self.id:

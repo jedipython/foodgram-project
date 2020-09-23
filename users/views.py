@@ -1,7 +1,9 @@
 import json
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views.generic import View
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import CreateView
@@ -33,7 +35,7 @@ def send_mail_ls(email):
               'ProProduct.ru <admin@proproduct.ru>', [email],
               fail_silently=False)
 
-
+@login_required
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -51,25 +53,40 @@ def change_password(request):
         'form': form
     })
 
-
+@login_required
 def my_subscriptions(request):
+    """ Представление страницы Мои Подписки """
     subscriptions = Subscription.objects.filter(user=request.user).all()
     return render(request, 'my_subscription.html', context={'subscriptions': subscriptions})
 
-
+@login_required
 def my_purchases(request):
+    """ Представление страницы Мои покупки """
     purchases = ShoppingList.objects.filter(user=request.user).all()
     return render(request, 'shopList.html', context={'purchases': purchases})
 
+@login_required
+def del_purchase_in_my_purchase(request, id):
+    """ Удаляет одну покупку, со страницы Моих покупок """
+    purchase = get_object_or_404(ShoppingList, user=request.user, recipe=id)
+    purchase.delete()
+    return render(request, 'shopList.html')
 
-class FavoriteIndex(RecipeIFavriteListView, View):
-    def get(self, request):
-        recipes = self.get_queryset
-        fav_list = get_fav_list(request)
-        all_tags = self.get_all_tags
-        fav_list = get_fav_list(request)
-        return render(request, 'favorite.html', context={'recipes': recipes, 'fav_list': fav_list, 'all_tags': all_tags})
+@login_required
+def my_favorites(request):
+    """ Представление страницы с избранными рецептами """
+    tags_values = request.GET.getlist('filters')
+    recipe_list = Favorite.objects.filter(user=request.user.id).all()
+    if tags_values:
+        recipe_list = recipe_list.filter(
+            recipe__tags__name__in=tags_values).distinct().all()
+    paginator = Paginator(recipe_list, 3)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    fav_list = get_fav_list(request)
 
+    return render(request, 'favorite.html',
+        {'page': page, 'paginator': paginator, 'fav_list': fav_list})
 
 class Favorites(LoginRequiredMixin, View):
     def post(self, request):

@@ -15,10 +15,10 @@
             <li class="shopping-list__item" data-id="{{ item.recipe.id }}">
                 <div class="recipe recipe_reverse">
                     <img src="{{ item.recipe.image.url }}" alt="Фото {{ item.recipe.title }}" class="recipe__image recipe__image_big">
-                    <h3 class="recipe__title">{{ item.recipe.title }}</h3>
+                    <h3 class="recipe__title"><a href="{% url 'posts:post_url' item.recipe.slug %}">{{ item.recipe.title }}</a></h3>
                     <p class="recipe__text"><span class="icon-time"></span> {{ item.recipe.time }} мин.</p>
                 </div>
-                <a href="#" class="shopping-list__button link">Удалить</a>
+                <a href="{% url 'del_one_purchase' item.recipe.id %}" class="shopping-list__button link">Удалить</a>
             </li>
             {% endfor %}
             
@@ -29,18 +29,7 @@
 
     </div>
 </main>
-<footer class="footer">
-    <div class="footer__container container">
-        <a href="#" class="footer__brand link">Продуктовый помощник</a>
-        <ul class="footer__items">
-            <li class="footer__item"><a href="#" class="footer__link link">Об авторе </a></li>
-            <li class="footer__item"><a href="#" class="footer__link link">Технологии</a></li>
-        </ul>
-    </div>
-</footer>
 
-</body>
-</html>
 
 
 {% endblock %}

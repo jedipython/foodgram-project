@@ -14,7 +14,8 @@
             <li class="tags__item">
                 <a 
                     id="{{ tag.value }}" 
-                    class="tags__checkbox tags__checkbox_style_{{ tag.style }} {% if tag.name in filter_values %}tags__checkbox_active{% endif %}" href="/?{{ request|get_filter_link:tag }}"></a>
+                    class="tags__checkbox tags__checkbox_style_{{ tag.style }} {% if tag.name in filter_values %}tags__checkbox_active{% endif %}" href="{% url 'posts:index' %}?{{ request|get_filter_link:tag }}"></a>
+                    
             <span class="tags__label">{{ tag.name }}</span>     
         </li>
             {% endfor %}
@@ -24,9 +25,9 @@
 <div class="card-list">
     {% for post in page %}
     <div class="card" data-id="{{ post.id }}">
-        <a href="{% url 'post_url' post.slug %}" class="link" target="_blank"><img src="{{ post.image.url }}" alt="Фото {{ post.title }}" class="card__image"></a>
+        <a href="{% url 'posts:post_url' post.slug %}" class="link" target="_blank"><img src="{{ post.image.url }}" alt="Фото {{ post.title }}" class="card__image"></a>
         <div class="card__body">
-            <a class="card__title link" href="{% url 'post_url' post.slug %}" target="_blank">{{ post.title }}</a>
+            <a class="card__title link" href="{% url 'posts:post_url' post.slug %}" target="_blank">{{ post.title }}</a>
             <ul class="card__items">
                 {% for tag in post.tags.all %}
                 <li class="card__item"><span class="badge badge_style_{{ tag.style }}">{{ tag.name }}</span></li>
@@ -34,7 +35,7 @@
             </ul>
             <div class="card__items card__items_column">
                 <p class="card__text"><span class="icon-time"></span> {{ post.time }} мин.</p>
-                <p class="card__text"><span class="icon-user"></span> <a href="{% url 'author_url' post.author %}" style="color: black">{{ post.author }}</a></p>
+                <p class="card__text"><span class="icon-user"></span> <a href="{% url 'posts:author_url' post.author %}" style="color: black">{{ post.author }}</a></p>
             </div>
         </div>
         {% if request.user.is_authenticated %}
@@ -51,30 +52,7 @@
 </div>
 
 {% if page.has_other_pages %}
-<nav class="pagination" aria-label="Search results pages">
-    <ul class="pagination__container">
-        {% if items.has_previous %}
-                
-                <li class="pagination__item"><a class="pagination__link link" href="?page={{ items.previous_page_number }}"><span class="icon-left"></span></a></li>
-      
-        {% endif %}
-        {% for i in paginator.page_range %}
-                {% if items.number == i %}
-                <li class="pagination__item pagination__item_active"><a class="pagination__link link" href="#">{{ i }}</a></li>
-                {% else %}
-                <li class="pagination__item"><a class="pagination__link link" href="?page={{ i }}">{{ i }}</a></li>
-                                {% endif %}
-        {% endfor %}
-        {% if items.has_next %}
-        <li class="pagination__item"><a class="pagination__link link" href="?page={{ items.next_page_number }}"><span class="icon-right"></span></a></li>
-             
-     
-        {% endif %}
-        
-        
-       
-    </ul>
-</nav>
+{% include 'paginator.html' %}   
  {% endif %}
 
 </main>

@@ -3,6 +3,7 @@ import json
 from django.shortcuts import render
 from .models import Recipe, Tag, Ingredient, Amount, User, Subscription, Favorite, ShoppingList
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from .forms import AddRecipeForm
 from django.shortcuts import redirect, get_object_or_404
 from django.http import JsonResponse
@@ -10,19 +11,27 @@ from .services import get_ingredients
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .services import get_fav_list, get_buying_list, RecipeIndexListView, ProfileIndexListView, assembly_ingredients, get_ingredients_value_or_names
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
 
 
-class RecipeIndex(RecipeIndexListView, View):
-    def get(self, request):
-        page = self.get_queryset
-        fav_list = get_fav_list(request)
-        all_tags = self.get_all_tags
-        paginator = Paginator(page, 3)
-        page_number = request.GET.get('page')
-        page = paginator.get_page(page_number)
-        return render(request, "index.html", {'paginator': paginator, 'page': page, 'fav_list': fav_list, 'all_tags': all_tags})
+def index(request):
+    """ Представление главной страницы """
 
+    tags_values = request.GET.getlist('filters')
+    recipe_list = Recipe.objects.order_by("-date").all()
+    if tags_values:
+        recipe_list = recipe_list.filter(
+            tags__name__in=tags_values).distinct().all()
+    paginator = Paginator(recipe_list, 3)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    fav_list = get_fav_list(request)
 
+    return render(request, 'index.html',
+        {'page': page, 'paginator': paginator, 'fav_list': fav_list})
+
+@login_required
 def add_recipe(request):
 
     if request.method == "POST":
@@ -86,22 +95,24 @@ def single_page(request):
     return render(request, 'customPage.html')
 
 
-
 class ProfileUser(ProfileIndexListView, View):
     def get(self, request, username):
         user = get_object_or_404(User, username=username)
-        page = self.get_queryset
-        all_tags = self.get_all_tags
-        # paginator = Paginator(post_list, 10)
-        # page_number = request.GET.get('page')
-        # page = paginator.get_page(page_number)
+        recipe_list = Recipe.objects.order_by("-date").all()
+        tags_values = request.GET.getlist('filters')
+        if tags_values:
+            recipe_list = recipe_list.filter(
+                tags__name__in=tags_values).distinct().all()
+        paginator = Paginator(recipe_list, 3)
+        page_number = request.GET.get('page')
+        page = paginator.get_page(page_number)
         subsc = False
         fav_list = get_fav_list(request)
         buying_list = get_buying_list(request)
         if request.user.is_authenticated:
             subsc = Subscription.objects.filter(
                 user=request.user, author=user).exists()
-        return render(request, "profile.html", {"page": page, 'user': user, 'subsc': subsc, 'fav_list': fav_list, 'buying_list': buying_list, 'all_tags': all_tags})
+        return render(request, "profile.html", {'page': page, 'paginator': paginator, 'user': user, 'subsc': subsc, 'fav_list': fav_list, 'buying_list': buying_list})
 
 
 class RecipeEdit(LoginRequiredMixin, View):

@@ -1,9 +1,12 @@
 from django.urls import path
 from .views import Ingredients, add_recipe, post_view,\
-    RecipeEdit, RecipeDelete, Subscriptions, single_page, RecipeIndex, ProfileUser
+    RecipeEdit, RecipeDelete, Subscriptions, single_page, ProfileUser, index
+
+app_name = 'posts'
 
 urlpatterns = [
-    path('', RecipeIndex.as_view(), name="index"),
+
+    path('', index, name="index"),
     path('subscriptions', Subscriptions.as_view(),
          name='add_subscriptions_url'),
     path('api/v1/ingredients', Ingredients.as_view(), name='API'),
