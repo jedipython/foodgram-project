@@ -81,19 +81,23 @@ class Subscription(models.Model):
                              related_name='user')
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='author')
-    
+
     def get_recipes(self):
         return Recipe.objects.select_related('author').filter(author__username=self.author)
 
 
 class Favorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="fav_list")
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='like_recipe')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="fav_list")
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE, related_name='like_recipe')
 
     def __str__(self):
         return f'{self.recipe}'
 
 
 class ShoppingList(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="shop_list")
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='buy_recipe')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="shop_list")
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE, related_name='buy_recipe')

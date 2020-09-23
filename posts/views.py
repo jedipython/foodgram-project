@@ -29,7 +29,8 @@ def index(request):
     fav_list = get_fav_list(request)
 
     return render(request, 'index.html',
-        {'page': page, 'paginator': paginator, 'fav_list': fav_list})
+                  {'page': page, 'paginator': paginator, 'fav_list': fav_list})
+
 
 @login_required
 def add_recipe(request):
@@ -95,7 +96,7 @@ def single_page(request):
     return render(request, 'customPage.html')
 
 
-class ProfileUser(ProfileIndexListView, View):
+class ProfileUser(View):
     def get(self, request, username):
         user = get_object_or_404(User, username=username)
         recipe_list = Recipe.objects.order_by("-date").all()
@@ -136,7 +137,8 @@ class RecipeEdit(LoginRequiredMixin, View):
         ingredients_names = get_ingredients_value_or_names(request, 'name')
         ingredients_values = get_ingredients_value_or_names(request, 'value')
         if form.is_valid():
-            assembly_ingredients(ingredients_names, ingredients_values, recipe, ingredients)
+            assembly_ingredients(
+                ingredients_names, ingredients_values, recipe, ingredients)
             form.save()
         else:
             tags = Tag.objects.all()

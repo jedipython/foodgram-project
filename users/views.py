@@ -35,6 +35,7 @@ def send_mail_ls(email):
               'ProProduct.ru <admin@proproduct.ru>', [email],
               fail_silently=False)
 
+
 @login_required
 def change_password(request):
     if request.method == 'POST':
@@ -53,11 +54,13 @@ def change_password(request):
         'form': form
     })
 
+
 @login_required
 def my_subscriptions(request):
     """ Представление страницы Мои Подписки """
     subscriptions = Subscription.objects.filter(user=request.user).all()
     return render(request, 'my_subscription.html', context={'subscriptions': subscriptions})
+
 
 @login_required
 def my_purchases(request):
@@ -65,12 +68,14 @@ def my_purchases(request):
     purchases = ShoppingList.objects.filter(user=request.user).all()
     return render(request, 'shopList.html', context={'purchases': purchases})
 
+
 @login_required
 def del_purchase_in_my_purchase(request, id):
     """ Удаляет одну покупку, со страницы Моих покупок """
     purchase = get_object_or_404(ShoppingList, user=request.user, recipe=id)
     purchase.delete()
     return render(request, 'shopList.html')
+
 
 @login_required
 def my_favorites(request):
@@ -86,7 +91,8 @@ def my_favorites(request):
     fav_list = get_fav_list(request)
 
     return render(request, 'favorite.html',
-        {'page': page, 'paginator': paginator, 'fav_list': fav_list})
+                  {'page': page, 'paginator': paginator, 'fav_list': fav_list})
+
 
 class Favorites(LoginRequiredMixin, View):
     def post(self, request):
