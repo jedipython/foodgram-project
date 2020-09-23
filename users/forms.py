@@ -41,8 +41,3 @@ class UserCreationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-
-
-class EmptyClass(UserCreationForm):
-    """ Flake8 не пропускает тест с импортом первой строки, но она нужна, чтобы работал класс выше """
-    pass
