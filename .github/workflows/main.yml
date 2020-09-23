@@ -21,9 +21,6 @@ jobs:
 
     - name: Lint with flake8
       run: flake8 .
-
-    - name: Test with pytest
-      run: pytest tests
   push_to_docker_hub:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
