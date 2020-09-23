@@ -11,7 +11,6 @@ from .services import get_ingredients
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .services import get_fav_list, get_buying_list, assembly_ingredients, get_ingredients_value_or_names
-from django.core.paginator import PageNotAnInteger
 
 
 def index(request):
@@ -168,7 +167,7 @@ class Subscriptions(LoginRequiredMixin, View):
 
             return JsonResponse({'success': True})
 
-        except:
+        except Exception:
             return JsonResponse({'success': False})
 
     def delete(self, request, id):

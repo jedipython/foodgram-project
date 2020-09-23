@@ -102,7 +102,7 @@ class Favorites(LoginRequiredMixin, View):
 
             return JsonResponse({'success': True})
 
-        except:
+        except Exception:
             return JsonResponse({'success': False})
 
     def delete(self, request, id):

@@ -4,6 +4,7 @@ from .models import Favorite, ShoppingList, Recipe, Tag, Ingredient, Amount
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
 
+
 def get_ingredients(request):
 
     ingredients = {}
@@ -71,7 +72,7 @@ def create_buy_guest(request, recipe_id):
     if 'shopping_list' in request.session:
         shopping_list = request.session['shopping_list']
         recipe_id = int(recipe_id)
-        if not recipe_id in shopping_list:
+        if recipe_id not in shopping_list:
             shopping_list.append(recipe_id)
             request.session['shopping_list'] = shopping_list
     else:
