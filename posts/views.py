@@ -10,8 +10,7 @@ from django.http import JsonResponse
 from .services import get_ingredients
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .services import get_fav_list, get_buying_list, RecipeIndexListView, ProfileIndexListView, assembly_ingredients, get_ingredients_value_or_names
-from django.core.paginator import EmptyPage
+from .services import get_fav_list, get_buying_list, assembly_ingredients, get_ingredients_value_or_names
 from django.core.paginator import PageNotAnInteger
 
 
@@ -151,7 +150,7 @@ class RecipeDelete(LoginRequiredMixin, View):
     def get(self, request, slug):
         recipe = get_object_or_404(Recipe, slug=slug)
         if request.user != recipe.author:
-            return redirect('post_url',  slug=recipe.slug)
+            return redirect('post_url', slug=recipe.slug)
 
         recipe.delete()
         return redirect('index')

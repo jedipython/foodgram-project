@@ -3,8 +3,6 @@ import json
 from .models import Favorite, ShoppingList, Recipe, Tag, Ingredient, Amount
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
-from django.core.paginator import Paginator
-
 
 def get_ingredients(request):
 
@@ -114,28 +112,6 @@ class RecipeIFavriteListView(ListView):
         if 'filters' in self.request.GET:
             filters = self.request.GET.getlist('filters')
             qs = qs.filter(recipe__tags__name__in=filters).distinct()
-
-        return qs
-
-    def get_all_tags(self):
-        return Tag.objects.all()
-
-    def context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({'all_tags': self.get_all_tags()})
-        return context
-
-
-class ProfileIndexListView(ListView):
-    model = Recipe
-    template_name = 'profile.html'
-
-    def get_queryset(self):
-        qs = (super().get_queryset()).filter(
-            author__username=self.kwargs.get('username'))
-        if 'filters' in self.request.GET:
-            filters = self.request.GET.getlist('filters')
-            qs = qs.filter(tags__name__in=filters).distinct()
 
         return qs
 

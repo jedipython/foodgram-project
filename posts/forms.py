@@ -6,7 +6,7 @@ from django.forms.widgets import CheckboxSelectMultiple
 class AddRecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        fields = ('title', 'text', 'time', 'tags', 'image' )
+        fields = ('title', 'text', 'time', 'tags', 'image')
         widgets = {
             "tags": CheckboxSelectMultiple(),
         }

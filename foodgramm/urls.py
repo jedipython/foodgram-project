@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
 from . import views
-from django.conf.urls import handler404, handler500
 
 handler404 = 'foodgramm.views.page_not_found'
 handler500 = 'foodgramm.views.server_error'

@@ -10,6 +10,7 @@ def purchases_processor(request):
 
     return {'purchases_count': purchases_count}
 
+
 def url_parse(request):
     """Установка фильтров в урл страницы."""
 
@@ -17,6 +18,7 @@ def url_parse(request):
     for item in request.GET.getlist('filters'):
         result_str += f'&filters={item}'
     return {'filters': result_str}
+
 
 def all_tags(request):
     return {'all_tags': Tag.objects.all()}
