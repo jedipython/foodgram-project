@@ -1,9 +1,8 @@
 import json
 
 from django.shortcuts import get_object_or_404
-from django.views.generic.list import ListView
 
-from .models import Amount, Favorite, Ingredient, Recipe, ShoppingList, Tag
+from .models import Amount, Favorite, Ingredient, Recipe, ShoppingList
 
 
 def get_ingredients(request):
