@@ -157,10 +157,9 @@ class RecipeDelete(LoginRequiredMixin, View):
 
 class Subscriptions(LoginRequiredMixin, View):
     def post(self, request):
-        author_id = json.loads(request.body)['id']
-        author = get_object_or_404(User, id=author_id)
-
         try:
+            author_id = json.loads(request.body)['id']
+            author = get_object_or_404(User, id=author_id)
             Subscription.objects.get_or_create(
                 user=request.user, author=author)
 
