@@ -28,8 +28,8 @@ class Tag(models.Model):
 
 
 class Recipe(models.Model):
-    def file_name(instance, filename):
-        ext = filename.split('.')[-1]
+    def replace_file_name(instance, filename):
+        name, ext = filename.split('.')
         filename = f'{instance.slug}.{ext}'
         fullname = os.path.join(settings.MEDIA_ROOT, 'images', filename)
         if os.path.exists(fullname):
@@ -38,9 +38,9 @@ class Recipe(models.Model):
         return f'images/{filename}'
 
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="post_author")
+        User, on_delete=models.CASCADE, related_name="recipes")
     title = models.CharField(max_length=255)
-    image = models.ImageField(upload_to=file_name)  # поле для картинки
+    image = models.ImageField(upload_to=replace_file_name)  # поле для картинки
     text = models.TextField()
     ingredients = models.ManyToManyField(Ingredient,
                                          through='Amount',
@@ -89,9 +89,9 @@ class Subscription(models.Model):
 
 class Favorite(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="fav_list")
+        User, on_delete=models.CASCADE, related_name="fav_lists")
     recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, related_name='like_recipe')
+        Recipe, on_delete=models.CASCADE, related_name='fav_lists')
 
     def __str__(self):
         return f'{self.recipe}'

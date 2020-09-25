@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                 ('image', models.ImageField(upload_to='media')),
                 ('text', models.TextField()),
                 ('time', models.IntegerField()),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='post_author', to=settings.AUTH_USER_MODEL)),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='recipes', to=settings.AUTH_USER_MODEL)),
                 ('ingredients', models.ManyToManyField(through='recipes.Amount', to='recipes.Ingredient')),
                 ('tags', models.ManyToManyField(to='recipes.Tag')),
             ],

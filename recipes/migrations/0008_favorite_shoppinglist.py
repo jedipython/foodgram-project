@@ -25,8 +25,8 @@ class Migration(migrations.Migration):
             name='Favorite',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('recipe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='like_recipe', to='recipes.Recipe')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='fav_list', to=settings.AUTH_USER_MODEL)),
+                ('recipe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='fav_lists', to='recipes.Recipe')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='fav_lists', to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

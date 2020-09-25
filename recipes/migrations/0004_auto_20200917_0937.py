@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='post',
             name='image',
-            field=models.ImageField(upload_to=recipes.models.Recipe.file_name),
+            field=models.ImageField(upload_to=recipes.models.Recipe.replace_file_name),
         ),
     ]
