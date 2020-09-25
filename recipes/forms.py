@@ -1,6 +1,7 @@
 from django import forms
-from .models import Recipe
 from django.forms.widgets import CheckboxSelectMultiple
+
+from .models import Recipe
 
 
 class AddRecipeForm(forms.ModelForm):

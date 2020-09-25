@@ -1,19 +1,21 @@
 import json
 
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
-from django.views.generic import View
-from django.core.paginator import Paginator
-from django.shortcuts import redirect, get_object_or_404, render
-from django.views.generic import CreateView
-from django.core.mail import send_mail
-from .forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
-from recipes.models import Subscription, Favorite, Recipe, ShoppingList
-from recipes.services import get_fav_list, get_id_recipe, create_buy, create_buy_guest
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
+from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic import CreateView, View
+
+from recipes.models import Favorite, Recipe, ShoppingList, Subscription
+from recipes.services import (create_buy, create_buy_guest, get_fav_list,
+                              get_id_recipe)
+
+from .forms import UserCreationForm
 
 
 class SignUp(CreateView):

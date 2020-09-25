@@ -14,10 +14,10 @@ def purchases_processor(request):
 def url_parse(request):
     """Установка фильтров в урл страницы."""
 
-    result_str = ''
+    result = []
     for item in request.GET.getlist('filters'):
-        result_str += f'&filters={item}'
-    return {'filters': result_str}
+        result += f'&filters={item}'
+    return {'filters': ''.join(result)}
 
 
 def all_tags(request):

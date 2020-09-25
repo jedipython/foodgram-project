@@ -1,16 +1,17 @@
 import json
 
-from django.shortcuts import render
-from .models import Recipe, Tag, Ingredient, Amount, User, Subscription, Favorite, ShoppingList
-from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from .forms import AddRecipeForm
-from django.shortcuts import redirect, get_object_or_404
-from django.http import JsonResponse
-from .services import get_ingredients
-from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .services import get_fav_list, get_buying_list, assembly_ingredients, get_ingredients_value_or_names
+from django.core.paginator import Paginator
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views import View
+
+from .forms import AddRecipeForm
+from .models import (Amount, Favorite, Ingredient, Recipe, ShoppingList,
+                     Subscription, Tag, User)
+from .services import (assembly_ingredients, get_buying_list, get_fav_list,
+                       get_ingredients, get_ingredients_value_or_names)
 
 
 def index(request):
@@ -115,7 +116,6 @@ class ProfileUser(View):
 
 
 class RecipeEdit(LoginRequiredMixin, View):
-
     def get(self, request, slug):
         recipe = get_object_or_404(Recipe, slug=slug)
         if request.user != recipe.author:
@@ -156,7 +156,6 @@ class RecipeDelete(LoginRequiredMixin, View):
 
 
 class Subscriptions(LoginRequiredMixin, View):
-
     def post(self, request):
         author_id = json.loads(request.body)['id']
         author = get_object_or_404(User, id=author_id)
