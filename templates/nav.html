@@ -1,24 +1,24 @@
 <nav class="nav">
     <div class="nav__container container">
         {% if user.is_authenticated %}
-                <ul class="nav__items list">
-                    <li class="nav__item {% if request.path == '/' %}nav__item_active{% endif %}"><a href="{% url 'recipes:index' %}" class="nav__link link">Рецепты</a></li>
-                    <li class="nav__item {% if request.path == '/my_sub/' %}nav__item_active{% endif %}"><a href="{% url 'my_subscriptions' %}" class="nav__link link">Мои подписки</a></li>
-                    <li class="nav__item {% if request.path == '/add_recipe/' %}nav__item_active{% endif %}"><a href="{% url 'recipes:add_recipe' %}" class="nav__link link">Создать рецепт</a></li>
-                    <li class="nav__item {% if request.path == '/my_favorites/' %}nav__item_active{% endif %}"><a href="{% url 'my_favorites' %}" class="nav__link link">Избранное</a></li>
-                    <li class="nav__item {% if request.path == '/' %}nav__item_active{% endif %}"><a href="{% url 'shop_list' %}" class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge" id="counter">{{ purchases_count }}</span></li>
+                <ul class="nav__items list"></ul>
+                    {% block index %}<li class="nav__item">{% endblock %}<a href="{% url 'recipes:index' %}" class="nav__link link">Рецепты</a></li>
+                    {% block my_subscriptions %}<li class="nav__item">{% endblock %}<a href="{% url 'my_subscriptions' %}" class="nav__link link">Мои подписки</a></li>
+                    {% block add_recipe %}<li class="nav__item">{% endblock %}<a href="{% url 'recipes:add_recipe' %}" class="nav__link link">Создать рецепт</a></li>
+                    {% block my_favorites %}<li class="nav__item">{% endblock %}<a href="{% url 'my_favorites' %}" class="nav__link link">Избранное</a></li>
+                    {% block shop_list %}<li class="nav__item">{% endblock %}<a href="{% url 'shop_list' %}" class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge" id="counter">{{ purchases_count }}</span></li>
                 
                 </ul>
                 <ul class="nav__items list">
-                    <li class="nav__item {% if request.path == '/auth/password_change/' %}nav__item_active{% endif %}"><a href="{% url 'password_change' %}" class="nav__link link">Изменить пароль</a></li>
+                    {% block password_change %}<li class="nav__item">{% endblock %}<a href="{% url 'password_change' %}" class="nav__link link">Изменить пароль</a></li>
                     <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link link">Выход</a></li>
                 </ul>
         {% else %}
         <ul class="nav__items list">
-            <li class="nav__item {% if request.path == '/' %}nav__item_active{% endif %}"><a href="{% url 'recipes:index' %}" class="nav__link link">Рецепты</a></li>        </ul>
+            <li class="nav__item nav__item_active"><a href="{% url 'recipes:index' %}" class="nav__link link">Рецепты</a></li>        </ul>
         <ul class="nav__items list">
-            <li class="nav__item {% if request.path == '/auth/login/' %}nav__item_active{% endif %}"><a href="{% url 'login' %}" class="nav__link link">Войти</a></li>
-            <li class="nav__item {% if request.path == '/auth/signup/' %}nav__item_active{% endif %}"><a href="{% url 'signup' %}" class="button button_style_blue">Создать аккаунт</a></li>
+            {% block login %}<li class="nav__item">{% endblock %}<a href="{% url 'login' %}" class="nav__link link">Войти</a></li>
+            {% block signup %}<li class="nav__item">{% endblock %}<a href="{% url 'signup' %}" class="button button_style_blue">Создать аккаунт</a></li>
         </ul>
         {% endif %}
     </div>

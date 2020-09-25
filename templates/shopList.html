@@ -1,6 +1,7 @@
 {% extends "base.html" %} 
 {% block title %} Страница покупок {% endblock %}
 {% load user_filters %}
+{% block shop_list %}<li class="nav__item nav__item_active">{% endblock %}
 {% load static %}
 {% block style %} <link rel="stylesheet" href={% static "pages/shopList.css" %}>{% endblock %}
 {% block content %}

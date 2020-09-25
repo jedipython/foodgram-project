@@ -2,6 +2,7 @@
 {% block title %} Рецепты {% endblock %}
 {% load user_filters %}
 {% load recipes_extras %}
+{% block index %}<li class="nav__item nav__item_active">{% endblock %}
 {% load static %}
 {% block style %}<link rel="stylesheet" href={% static "/pages/index.css" %}>{% endblock %}
 {% block content %}

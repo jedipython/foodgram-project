@@ -1,6 +1,7 @@
 {% extends "base.html" %} 
 {% block title %} Добавление рецепта{% endblock %}
 {% load user_filters %}
+{% block add_recipe %}<li class="nav__item nav__item_active">{% endblock %}
 {% load static %}
 {% block style %} <link rel="stylesheet" href={% static "/pages/form.css" %}>{% endblock %}
 {% block content %}

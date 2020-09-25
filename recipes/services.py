@@ -82,55 +82,11 @@ def create_buy_guest(request, recipe_id):
     return {'success': True}
 
 
-class RecipeIndexListView(ListView):
-    model = Recipe
-    template_name = 'index.html'
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-
-        if 'filters' in self.request.GET:
-            filters = self.request.GET.getlist('filters')
-            qs = qs.filter(tags__name__in=filters).distinct()
-
-        return qs
-
-    def get_all_tags(self):
-        return Tag.objects.all()
-
-    def context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({'all_tags': self.get_all_tags()})
-        return context
-
-
-class RecipeIFavriteListView(ListView):
-    model = Favorite
-    template_name = 'favorite.html'
-
-    def get_queryset(self):
-        qs = super().get_queryset()
-
-        if 'filters' in self.request.GET:
-            filters = self.request.GET.getlist('filters')
-            qs = qs.filter(recipe__tags__name__in=filters).distinct()
-
-        return qs
-
-    def get_all_tags(self):
-        return Tag.objects.all()
-
-    def context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({'all_tags': self.get_all_tags()})
-        return context
-
-
 def assembly_ingredients(ingredients_names, ingredients_values, recipe, ingredients):
     """ Удаление ингредиентов из поста и установка новых, полученных с request
     """
     ingredients_list = []
-    if len(ingredients_names) != 0:
+    if len(ingredients_names):
         ingredients.delete()
         for n, name in enumerate(ingredients_names):
             try:
