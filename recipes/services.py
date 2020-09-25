@@ -19,12 +19,14 @@ def get_ingredients(request):
     return ingredients
 
 
-def get_ingredients_value_or_names(request, option):
+def get_ingredients_names(request):
     ingredients = get_ingredients(request)
-    if option == 'name':
-        return list(ingredients.keys())
-    elif option == 'value':
-        return list(ingredients.values())
+    return list(ingredients.keys())
+
+
+def get_ingredients_values(request):
+    ingredients = get_ingredients(request)
+    return list(ingredients.values())
 
 
 def get_id_recipe(request):

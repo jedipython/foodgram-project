@@ -11,7 +11,7 @@ from .forms import AddRecipeForm
 from .models import (Amount, Favorite, Ingredient, Recipe, ShoppingList,
                      Subscription, Tag, User)
 from .services import (assembly_ingredients, get_buying_list, get_fav_list,
-                       get_ingredients, get_ingredients_value_or_names)
+                       get_ingredients, get_ingredients_values, get_ingredients_names)
 
 
 def index(request):
@@ -132,8 +132,8 @@ class RecipeEdit(LoginRequiredMixin, View):
 
         ingredients = recipe.ingredients.all()
         form = AddRecipeForm(request.POST, request.FILES, instance=recipe)
-        ingredients_names = get_ingredients_value_or_names(request, 'name')
-        ingredients_values = get_ingredients_value_or_names(request, 'value')
+        ingredients_names = get_ingredients_names(request)
+        ingredients_values = get_ingredients_values(request)
         if form.is_valid():
             assembly_ingredients(
                 ingredients_names, ingredients_values, recipe, ingredients)
