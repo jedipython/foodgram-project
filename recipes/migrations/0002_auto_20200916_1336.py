@@ -5,7 +5,7 @@ from django.db import migrations, transaction
 
 
 def add_ingredients(apps, schema_editor):
-    Ingredient = apps.get_model('posts', 'Ingredient')
+    Ingredient = apps.get_model('recipes', 'Ingredient')
     Ingredient.objects.all().delete()
     with open('ingredients.json', encoding='utf-8') as file:
         ingredients = json.load(file)
@@ -17,7 +17,7 @@ def add_ingredients(apps, schema_editor):
 
 
 def add_tags(apps, schema_editor):
-    Tag = apps.get_model('posts', 'Tag')
+    Tag = apps.get_model('recipes', 'Tag')
     Tag.objects.all().delete()
     with open('tags.json', encoding='utf-8') as file:
         tags = json.load(file)
@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
     atomic = False
 
     dependencies = [
-        ('posts', '0001_initial'),
+        ('recipes', '0001_initial'),
     ]
 
     operations = [

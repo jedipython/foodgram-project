@@ -15,7 +15,7 @@
             <li class="shopping-list__item" data-id="{{ item.recipe.id }}">
                 <div class="recipe recipe_reverse">
                     <img src="{{ item.recipe.image.url }}" alt="Фото {{ item.recipe.title }}" class="recipe__image recipe__image_big">
-                    <h3 class="recipe__title"><a href="{% url 'posts:post_url' item.recipe.slug %}">{{ item.recipe.title }}</a></h3>
+                    <h3 class="recipe__title"><a href="{% url 'recipes:post_url' item.recipe.slug %}">{{ item.recipe.title }}</a></h3>
                     <p class="recipe__text"><span class="icon-time"></span> {{ item.recipe.time }} мин.</p>
                 </div>
                 <a href="{% url 'del_one_purchase' item.recipe.id %}" class="shopping-list__button link">Удалить</a>

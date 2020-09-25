@@ -11,8 +11,8 @@ from .forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from posts.models import Subscription, Favorite, Recipe, ShoppingList
-from posts.services import get_fav_list, get_id_recipe, create_buy, create_buy_guest
+from recipes.models import Subscription, Favorite, Recipe, ShoppingList
+from recipes.services import get_fav_list, get_id_recipe, create_buy, create_buy_guest
 from django.http import HttpResponse, JsonResponse
 
 

@@ -48,18 +48,18 @@ class Migration(migrations.Migration):
                 ('text', models.TextField()),
                 ('time', models.IntegerField()),
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='post_author', to=settings.AUTH_USER_MODEL)),
-                ('ingredients', models.ManyToManyField(through='posts.Amount', to='posts.Ingredient')),
-                ('tags', models.ManyToManyField(to='posts.Tag')),
+                ('ingredients', models.ManyToManyField(through='recipes.Amount', to='recipes.Ingredient')),
+                ('tags', models.ManyToManyField(to='recipes.Tag')),
             ],
         ),
         migrations.AddField(
             model_name='amount',
             name='ingredient',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='ingredients', to='posts.Ingredient'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='ingredients', to='recipes.Ingredient'),
         ),
         migrations.AddField(
             model_name='amount',
             name='recipe',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='recipe', to='posts.Post'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='recipe', to='recipes.Post'),
         ),
     ]

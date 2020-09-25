@@ -1,7 +1,7 @@
 {% extends "base.html" %} 
 {% block title %} Автор {{ user.username }}{% endblock %}
 {% load user_filters %}
-{% load posts_extras %}
+{% load recipes_extras %}
 {% load static %}
 {% block style %} <link rel="stylesheet" href={% static "/pages/index.css" %}>{% endblock %}
 {% block content %}
@@ -33,9 +33,9 @@
 <div class="card-list" >
     {% for post in page %}
     <div class="card" data-id="{{ post.id }}">
-        <a href="{% url 'posts:post_url' post.slug %}" class="link" target="_blank"><img src="{{ post.image.url }}" alt="Фото {{ post.title }}" class="card__image"></a>
+        <a href="{% url 'recipes:post_url' post.slug %}" class="link" target="_blank"><img src="{{ post.image.url }}" alt="Фото {{ post.title }}" class="card__image"></a>
         <div class="card__body">
-            <a class="card__title link" href="{% url 'posts:post_url' post.slug %}" target="_blank">{{ post.title }}</a>
+            <a class="card__title link" href="{% url 'recipes:post_url' post.slug %}" target="_blank">{{ post.title }}</a>
             <ul class="card__items">
                 {% for tag in post.tags.all %}
                 <li class="card__item"><span class="badge badge_style_{{ tag.style }}">{{ tag.name }}</span></li>
@@ -43,7 +43,7 @@
             </ul>
             <div class="card__items card__items_column">
                 <p class="card__text"><span class="icon-time"></span> {{ post.time }} мин.</p>
-                <p class="card__text"><span class="icon-user"></span> <a href="{% url 'posts:author_url' post.author %}" style="color: black">{{ post.author }}</a></p>
+                <p class="card__text"><span class="icon-user"></span> <a href="{% url 'recipes:author_url' post.author %}" style="color: black">{{ post.author }}</a></p>
             </div>
         </div>
         {% if request.user.is_authenticated %}

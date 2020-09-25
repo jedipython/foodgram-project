@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('posts', '0007_subscription'),
+        ('recipes', '0007_subscription'),
     ]
 
     operations = [
@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             name='ShoppingList',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('recipe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='buy_recipe', to='posts.Recipe')),
+                ('recipe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='buy_recipe', to='recipes.Recipe')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='shop_list', to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
             name='Favorite',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('recipe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='like_recipe', to='posts.Recipe')),
+                ('recipe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='like_recipe', to='recipes.Recipe')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='fav_list', to=settings.AUTH_USER_MODEL)),
             ],
         ),

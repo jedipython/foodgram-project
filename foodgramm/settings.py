@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'posts',
+    'recipes',
     'users',
 ]
 
@@ -64,9 +64,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'posts.context_processors.purchases_processor',
-                'posts.context_processors.url_parse',
-                'posts.context_processors.all_tags',
+                'recipes.context_processors.purchases_processor',
+                'recipes.context_processors.url_parse',
+                'recipes.context_processors.all_tags',
             ],
         },
     },

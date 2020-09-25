@@ -1,7 +1,7 @@
 {% extends "base.html" %} 
 {% block title %} Избранное {% endblock %}
 {% load user_filters %}
-{% load posts_extras %}
+{% load recipes_extras %}
 {% load static %}
 {% block style %} <link rel="stylesheet" href={% static "/pages/index.css" %}>{% endblock %}
 {% block content %}
@@ -24,7 +24,7 @@
 <div class="card-list">
     {% for item in page %}
     <div class="card" data-id="{{ item.recipe.id }}">
-        <a href="{% url 'posts:post_url' item.recipe.slug %}" class="link" target="_blank"><img src="{{ item.recipe.image.url }}" alt="Фото {{ item.recipe.title }}" class="card__image"></a>
+        <a href="{% url 'recipes:post_url' item.recipe.slug %}" class="link" target="_blank"><img src="{{ item.recipe.image.url }}" alt="Фото {{ item.recipe.title }}" class="card__image"></a>
         <div class="card__body">
             <a class="card__title link" href="" target="_blank">{{ post.title }}</a>
             <ul class="card__items">
@@ -34,7 +34,7 @@
             </ul>
             <div class="card__items card__items_column">
                 <p class="card__text"><span class="icon-time"></span> {{ item.recipe.time }} мин.</p>
-                <p class="card__text"><span class="icon-user"></span> <a href="{% url 'posts:author_url' item.recipe.author %}" style="color: black">{{ item.recipe.author }}</a></p>
+                <p class="card__text"><span class="icon-user"></span> <a href="{% url 'recipes:author_url' item.recipe.author %}" style="color: black">{{ item.recipe.author }}</a></p>
             </div>
         </div>
         <div class="card__footer">
