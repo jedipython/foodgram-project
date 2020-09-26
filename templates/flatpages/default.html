@@ -1,0 +1,15 @@
+{% extends "base.html" %} 
+{% block title %} {{ flatpage.title }} {% endif %}
+{% endblock %}
+{% load user_filters %}
+{% load static %}
+{% block style %} <link rel="stylesheet" href={% static "/pages/index.css" %}>{% endblock %}
+{% block content %}
+    <div class="custom-center-block">
+            <p class="custom-text-block"> {{ flatpage.content }}</p>
+            <div class="custom-button-block">
+            <button class="button button_style_blue">Перейти на главную</button>
+            </div>     
+    </div>
+</main>
+{% endblock %}

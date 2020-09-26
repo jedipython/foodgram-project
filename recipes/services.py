@@ -6,7 +6,6 @@ from .models import Amount, Favorite, Ingredient, Recipe, ShoppingList
 
 
 def get_ingredients(request):
-
     ingredients = {}
     for key in request.POST:
 
@@ -29,13 +28,13 @@ def get_ingredients_values(request):
 
 
 def get_id_recipe(request):
-    """ Функция получает id рецепта из тела запроса. """
+    """Функция получает id рецепта из тела запроса."""
     body = json.loads(request.body)
     return body.get('id')
 
 
 def get_fav_list(request):
-    """ Функция возвращает список id избранных рецептов. """
+    """Возвращает список id избранных рецептов."""
     fav_list = []
     if request.user.is_authenticated:
         fav_list = Favorite.objects.select_related('recipe').filter(
@@ -45,7 +44,7 @@ def get_fav_list(request):
 
 
 def get_buying_list(request):
-    """ Функция возвращает список покупок пользователя. """
+    """Возвращает список покупок пользователя."""
     if request.user.is_authenticated:
         buying_list = ShoppingList.objects.select_related('recipe').filter(
             user=request.user).values_list('recipe__id', flat=True)
@@ -84,8 +83,7 @@ def create_buy_guest(request, recipe_id):
 
 
 def assembly_ingredients(ingredients_names, ingredients_values, recipe, ingredients):
-    """ Удаление ингредиентов из поста и установка новых, полученных с request
-    """
+    """Удаление ингредиентов из поста и установка новых, полученных с request."""
     ingredients_list = []
     if len(ingredients_names):
         ingredients.delete()

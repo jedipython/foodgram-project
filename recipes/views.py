@@ -15,8 +15,7 @@ from .services import (assembly_ingredients, get_buying_list, get_fav_list,
 
 
 def index(request):
-    """ Представление главной страницы """
-
+    """Представление главной страницы."""
     tags_values = request.GET.getlist('filters')
     recipe_list = Recipe.objects.order_by("-date").all()
     if tags_values:
@@ -51,7 +50,7 @@ def add_recipe(request):
                     ingredient=Ingredient.objects.get(title=f'{item}'),
                     recipe=post)
             form.save_m2m()
-            return redirect('/')
+            return redirect('recipes:index')
 
     else:
         form = AddRecipeForm(request.POST, files=request.FILES or None)
@@ -61,8 +60,7 @@ def add_recipe(request):
 
 
 class Ingredients(View):
-    """ Авто-Заполнение поля ингредиента по API """
-
+    """Авто-Заполнение поля ингредиента по API."""
     def get(self, request):
         text = request.GET['query']
         ingredients = list(Ingredient.objects.filter(
@@ -119,7 +117,7 @@ class RecipeEdit(LoginRequiredMixin, View):
     def get(self, request, slug):
         recipe = get_object_or_404(Recipe, slug=slug)
         if request.user != recipe.author:
-            return redirect('post_url', slug=recipe.slug)
+            return redirect('recipes:post_url', slug=recipe.slug)
 
         form = AddRecipeForm(instance=recipe)
         tags = Tag.objects.all()
@@ -128,7 +126,7 @@ class RecipeEdit(LoginRequiredMixin, View):
     def post(self, request, slug):
         recipe = get_object_or_404(Recipe, slug=slug)
         if request.user != recipe.author:
-            return redirect('post_url', slug=recipe.slug)
+            return redirect('recipes:post_url', slug=recipe.slug)
 
         ingredients = recipe.ingredients.all()
         form = AddRecipeForm(request.POST, request.FILES, instance=recipe)
@@ -142,17 +140,17 @@ class RecipeEdit(LoginRequiredMixin, View):
             tags = Tag.objects.all()
             return render(request, 'formRecipe.html', context={'form': form, 'recipe': recipe, 'tags': tags})
 
-        return redirect('post_url', slug=recipe.slug)
+        return redirect('recipes:post_url', slug=recipe.slug)
 
 
 class RecipeDelete(LoginRequiredMixin, View):
     def get(self, request, slug):
         recipe = get_object_or_404(Recipe, slug=slug)
         if request.user != recipe.author:
-            return redirect('post_url', slug=recipe.slug)
+            return redirect('recipes:post_url', slug=recipe.slug)
 
         recipe.delete()
-        return redirect('index')
+        return redirect('recipes:index')
 
 
 class Subscriptions(LoginRequiredMixin, View):
@@ -169,14 +167,12 @@ class Subscriptions(LoginRequiredMixin, View):
             return JsonResponse({'success': False})
 
     def delete(self, request, id):
-        """ Удаляем подписку если она существует. """
-        author = get_object_or_404(User, id=id)
-        try:
-            subs = Subscription.objects.get(user=request.user, author=author)
-        except Subscription.DoesNotExist:
+        """Удаляем подписку если она существует."""
+        author = get_object_or_404(User, id=id )
+        sub_delete = Subscription.objects.filter(user=request.user, author=author).delete()
+        if sub_delete == 0:
             results = {'success': False}
         else:
-            subs.delete()
             results = {'success': True}
 
         return JsonResponse(results, safe=False, json_dumps_params={'ensure_ascii': False})

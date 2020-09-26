@@ -35,5 +35,5 @@ services:
     volumes:
       - static_volume:/code/staticfiles
       - media_volume:/code/media
-    command: bash -c "python3 manage.py collectstatic --no-input && python3 manage.py makemigrations && python3 manage.py migrate --noinput && gunicorn foodgramm.wsgi:application --bind 0.0.0.0:8000"
+    command: bash -c "gunicorn foodgramm.wsgi:application --bind 0.0.0.0:8000"
   

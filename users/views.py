@@ -57,21 +57,21 @@ def change_password(request):
 
 @login_required
 def my_subscriptions(request):
-    """ Представление страницы Мои Подписки """
+    """Представление страницы Мои Подписки."""
     subscriptions = Subscription.objects.filter(user=request.user).all()
     return render(request, 'my_subscription.html', context={'subscriptions': subscriptions})
 
 
 @login_required
 def my_purchases(request):
-    """ Представление страницы Мои покупки """
+    """Представление страницы Мои покупки."""
     purchases = ShoppingList.objects.filter(user=request.user).all()
     return render(request, 'shopList.html', context={'purchases': purchases})
 
 
 @login_required
 def del_purchase_in_my_purchase(request, id):
-    """ Удаляет одну покупку, со страницы Моих покупок """
+    """Удаляет одну покупку, со страницы Моих покупок."""
     purchase = get_object_or_404(ShoppingList, user=request.user, recipe=id)
     purchase.delete()
     return render(request, 'shopList.html')
@@ -79,7 +79,7 @@ def del_purchase_in_my_purchase(request, id):
 
 @login_required
 def my_favorites(request):
-    """ Представление страницы с избранными рецептами """
+    """Представление страницы с избранными рецептами."""
     tags_values = request.GET.getlist('filters')
     recipe_list = Favorite.objects.filter(user=request.user.id).all()
     if tags_values:
@@ -108,12 +108,10 @@ class Favorites(LoginRequiredMixin, View):
             return JsonResponse({'success': False})
 
     def delete(self, request, id):
-        try:
-            fav = Favorite.objects.get(user=request.user, recipe=id)
-        except Favorite.DoesNotExist:
+        fav_delete = Favorite.objects.filter(user=request.user, recipe=id).delete()
+        if fav_delete == 0:
             results = {'success': False}
         else:
-            fav.delete()
             results = {'success': True}
 
         return JsonResponse(results, safe=False, json_dumps_params={'ensure_ascii': False})
@@ -130,13 +128,12 @@ class Purchases(LoginRequiredMixin, View):
         return JsonResponse(results, safe=False, json_dumps_params={'ensure_ascii': False})
 
     def delete(self, request, id):
-        try:
-            buy = ShoppingList.objects.get(user=request.user, recipe=id)
-        except ShoppingList.DoesNotExist:
+        buy_delete = ShoppingList.objects.filter(user=request.user, recipe=id).delete()
+        if buy_delete == 0:
             results = {'success': False}
         else:
-            buy.delete()
             results = {'success': True}
+
         return JsonResponse(results, safe=False, json_dumps_params={'ensure_ascii': False})
 
 
