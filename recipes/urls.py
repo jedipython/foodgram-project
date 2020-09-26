@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import (Ingredients, ProfileUser, RecipeDelete, RecipeEdit,
-                    Subscriptions, add_recipe, index, post_view, single_page)
+                    Subscriptions, add_recipe, index, post_view)
 
 app_name = 'recipes'
 

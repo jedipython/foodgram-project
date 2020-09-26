@@ -77,7 +77,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'foodgramm.wsgi.application'
 
 # Идентификатор текущего сайта
-SITE_ID = 1 
+SITE_ID = 1
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases

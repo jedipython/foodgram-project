@@ -16,6 +16,6 @@ urlpatterns = [
     path('', include("recipes.urls")),
 ]
 urlpatterns += [
-        path('about-me/', views_flat.flatpage, {'url': '/about-me/'}, name='about'),
-        path('stack/', views_flat.flatpage, {'url': '/terms/'}, name='stack'),
-] 
+    path('about-me/', views_flat.flatpage, {'url': '/about-me/'}, name='about'),
+    path('stack/', views_flat.flatpage, {'url': '/terms/'}, name='stack'),
+]
