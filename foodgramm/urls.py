@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path
+from django.contrib.flatpages import views as views_flat
 
 from . import views
 
@@ -13,5 +14,8 @@ urlpatterns = [
     path("", include("users.urls")),
     path("auth/", include("django.contrib.auth.urls")),
     path('', include("recipes.urls")),
-    path('about/', include('django.contrib.flatpages.urls')),
 ]
+urlpatterns += [
+        path('about-me/', views_flat.flatpage, {'url': '/about-me/'}, name='about'),
+        path('stack/', views_flat.flatpage, {'url': '/terms/'}, name='stack'),
+] 

@@ -30,7 +30,7 @@
             {% endfor %}
             {% if forloop.counter > 3 %}
             <li class="card-user__item">
-                <a href="{% url 'author_url' sub.author.username %}" class="card-user__link link">Еще рецептов {{ subscriptions_recipes.count|add:-3 }}</a>
+                <a href="{% url 'recipes:author_url' sub.author.username %}" class="card-user__link link">Еще рецептов {{ subscriptions_recipes.count|add:-3 }}</a>
             </li>
             {% endif %}
         </ul>
@@ -55,6 +55,4 @@
 <script src="{% static 'js/components/Header.js' %}"></script>
 <script src="{% static 'js/api/Api.js' %}"></script>
 <script src="{% static 'myFollow.js' %}"></script>
-
-
 {% endblock %}

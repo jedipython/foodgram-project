@@ -94,20 +94,15 @@
             </div>
         </div>
         <div class="form__footer">
-            {% if request.path == "/add_recipe/" %}
+            {% if url_name == add_recipe %}
             <button class="button button_style_blue" type="submit" id="submit-button">Создать рецепт</button>
           {% else %}
             <button class="button button_style_blue" type="submit" id="submit-button">Изменить рецепт</button>
-
-
-
             <a href="{% url 'recipes:delete_recipes_url' recipe.slug %}" style="padding-left: 10px;" id="delete">Удалить</a>
           {% endif %}
         </div>
     </form>
 </div>
-
-
 </main>
 {% endblock %}
 {% block script %}
@@ -116,6 +111,4 @@
 <script src={% static "/js/utils/debouncing.js" %}></script>
 <script src={% static "/js/api/Api.js" %}></script>
 <script src={% static "formRecipe.js" %}></script>
-
 {% endblock %}
-

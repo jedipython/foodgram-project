@@ -1,9 +1,9 @@
 <footer class="footer">
     <div class="footer__container container">
-        <a href="/" class="footer__brand link">Продуктовый помощник</a>
+        <a href="{% url 'recipes:index' %}" class="footer__brand link">Продуктовый помощник</a>
         <ul class="footer__items">
-            <li class="footer__item"><a href="{% url 'recipes:single_page_about' %}" class="footer__link link">Об авторе </a></li>
-            <li class="footer__item"><a href="{% url 'recipes:single_page_stack_url' %}" class="footer__link link">Технологии</a></li>
+            <li class="footer__item"><a href="{% url 'about' %}" class="footer__link link">Об авторе </a></li>
+            <li class="footer__item"><a href="{% url 'stack' %}" class="footer__link link">Технологии</a></li>
         </ul>
     </div>
 </footer>

@@ -84,7 +84,7 @@ class Subscription(models.Model):
         User, on_delete=models.CASCADE, related_name='author')
 
     def get_recipes(self):
-        return Recipe.objects.select_related('author').filter(username=self.author)
+        return Recipe.objects.select_related('author').filter(author=self.author)
 
 
 class Favorite(models.Model):

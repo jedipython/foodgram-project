@@ -61,6 +61,7 @@ def add_recipe(request):
 
 class Ingredients(View):
     """Авто-Заполнение поля ингредиента по API."""
+
     def get(self, request):
         text = request.GET['query']
         ingredients = list(Ingredient.objects.filter(
@@ -155,20 +156,17 @@ class RecipeDelete(LoginRequiredMixin, View):
 
 class Subscriptions(LoginRequiredMixin, View):
     def post(self, request):
-        try:
-            author_id = json.loads(request.body)['id']
-            author = get_object_or_404(User, id=author_id)
-            Subscription.objects.get_or_create(
-                user=request.user, author=author)
-
+        """Создаем подписку"""
+        author_id = json.loads(request.body)['id']
+        author = get_object_or_404(User, id=author_id)
+        create_subscription = Subscription.objects.get_or_create(user=request.user, author=author)
+        if create_subscription:
             return JsonResponse({'success': True})
-
-        except Exception:
-            return JsonResponse({'success': False})
+        return JsonResponse({'success': False})
 
     def delete(self, request, id):
         """Удаляем подписку если она существует."""
-        author = get_object_or_404(User, id=id )
+        author = get_object_or_404(User, id=id)
         sub_delete = Subscription.objects.filter(user=request.user, author=author).delete()
         if sub_delete == 0:
             results = {'success': False}

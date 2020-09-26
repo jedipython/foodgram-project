@@ -14,7 +14,7 @@
         <li class="tags__item">
             <a 
                 id="{{ tag.value }}" 
-                class="tags__checkbox tags__checkbox_style_{{ tag.style }} {% if tag.name in filter_values %}tags__checkbox_active{% endif %}" href="/author/{{ user.username }}/?{{ request|get_filter_link:tag }}"></a>
+                class="tags__checkbox tags__checkbox_style_{{ tag.style }} {% if tag.name in filter_values %}tags__checkbox_active{% endif %}" href="{% url 'recipes:author_url' user.username %}?{{ request|get_filter_link:tag }}"></a>
         <span class="tags__label">{{ tag.name }}</span>     
     </li>
         {% endfor %}
@@ -26,7 +26,6 @@
     
     <p style="padding: 0 0 2em 0;"><button class="button button_style_light-blue button_size_subscribe" name="subscribe" {% if not subsc %}data-out>Подписаться на автора {% else %}><span class="icon-check button__icon"></span> Отписаться от автора{% endif %}</button></p>
     
-      
 {% endif %}
     
 </div>
@@ -61,24 +60,18 @@
         {% endfor %}
 </div>
 {% if page.has_other_pages %}
-{% include 'paginator.html' %}   
- {% endif %}
+    {% include 'paginator.html' %}   
+{% endif %}
 </main>
 {% endblock %}
 {% block script %}
-
-
-    <script src="{% static '/js/components/MainCards.js' %}"></script>
-
-    <script src="{% static '/js/components/Purchases.js' %}"></script>
-    <script src="{% static '/js/components/Favorites.js' %}"></script>
-    <script src="{% static '/js/components/Subscribe.js' %}"></script>
-  
-    <script src="{% static '/js/config/config.js' %}"></script>
-    <script src="{% static '/js/components/AuthorRecipe.js' %}"></script>
-    <script src="{% static '/js/components/Header.js' %}"></script>
-  
-    <script src="{% static '/js/api/Api.js' %}"></script>
-    <script src="{% static 'authorRecipe.js' %}"></script>
-
+<script src="{% static '/js/components/MainCards.js' %}"></script>
+<script src="{% static '/js/components/Purchases.js' %}"></script>
+<script src="{% static '/js/components/Favorites.js' %}"></script>
+<script src="{% static '/js/components/Subscribe.js' %}"></script>
+<script src="{% static '/js/config/config.js' %}"></script>
+<script src="{% static '/js/components/AuthorRecipe.js' %}"></script>
+<script src="{% static '/js/components/Header.js' %}"></script>
+<script src="{% static '/js/api/Api.js' %}"></script>
+<script src="{% static 'authorRecipe.js' %}"></script>
 {% endblock %}

@@ -1,9 +1,5 @@
 {% extends "base.html" %}
-{% block title %}
-{% if request.path == '/about/' %}Об авторе
-{% elif request.path == '/stack/' %} Технологии
-{% endif %}
-{% endblock %}
+{% block title %}Ошибка 500{% endblock %}
 {% load user_filters %}
 {% load static %}
 {% block style %}
@@ -12,13 +8,9 @@
 <div class="custom-center-block">
     <h1>Ошибка 500</h1>
           <p class="lead">Ошибка на сервере, попробуйте обновить страницу или обратиться позже</p>
-
     <div class="custom-button-block">
         <button class="button button_style_blue">Перейти на главную</button>
     </div>
-
 </div>
-
-
 </main>
 {% endblock %}
