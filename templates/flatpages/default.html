@@ -1,6 +1,5 @@
 {% extends "base.html" %} 
-{% block title %} {{ flatpage.title }} {% endif %}
-{% endblock %}
+{% block title %} {{ flatpage.title }} {% endblock %}
 {% load user_filters %}
 {% load static %}
 {% block style %} <link rel="stylesheet" href={% static "/pages/index.css" %}>{% endblock %}
@@ -13,9 +12,3 @@
     </div>
 </main>
 {% endblock %}
-
-
-При создании сайта использованы следующие технологии: Python, Django, PostgreSQL, Docker-compose, Javascript, Nginx.
-
-Здравствуйте. Меня зовут Игорь, я Junior Python Developer. И создал этот проект, как свою дипломную работу, при обучении в Яндекс.Практикум.
-
