@@ -21,7 +21,7 @@ def index(request):
     if tags_values:
         recipe_list = recipe_list.filter(
             tags__name__in=tags_values).distinct().all()
-    paginator = Paginator(recipe_list, 3)
+    paginator = Paginator(recipe_list, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     fav_list = get_fav_list(request)
@@ -102,7 +102,7 @@ class ProfileUser(View):
         if tags_values:
             recipe_list = recipe_list.filter(
                 tags__name__in=tags_values).distinct().all()
-        paginator = Paginator(recipe_list, 3)
+        paginator = Paginator(recipe_list, 6)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
         subsc = False
