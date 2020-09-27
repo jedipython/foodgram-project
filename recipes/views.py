@@ -97,7 +97,7 @@ def single_page(request):
 class ProfileUser(View):
     def get(self, request, username):
         user = get_object_or_404(User, username=username)
-        recipe_list = Recipe.objects.order_by("-date").all()
+        recipe_list = Recipe.objects.filter(author=user).order_by("-date").all()
         tags_values = request.GET.getlist('filters')
         if tags_values:
             recipe_list = recipe_list.filter(
